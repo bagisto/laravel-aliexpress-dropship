@@ -29,6 +29,7 @@ return [
             'default-tax-category' => 'Default Tax Category',
             'set-as-new' => 'Set As New',
             'set-as-featured' => 'Set As Featured',
+            'default-weight' => 'Default Weight',
             'product-price' => 'Product Price',
             'price' => 'Price',
             'price-info' => '',

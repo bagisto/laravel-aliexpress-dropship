@@ -185,7 +185,7 @@ class AliExpressProductRepository extends Repository
                     'url_key' => $data['id'],
                     'new' => core()->getConfigData('dropship.settings.product.set_new'),
                     'featured' => core()->getConfigData('dropship.settings.product.set_featured'),
-                    "weight" => 0
+                    "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0
                 ]), $product->id);
 
             $attributeRepository = app('Webkul\Attribute\Repositories\AttributeRepository');
@@ -411,7 +411,7 @@ class AliExpressProductRepository extends Repository
                 "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
                 "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
                 "price" => $price,
-                "weight" => 0,
+                "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
                 "status" => 1
             ]));
 

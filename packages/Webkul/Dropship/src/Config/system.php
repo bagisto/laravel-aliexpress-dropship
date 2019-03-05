@@ -79,6 +79,10 @@ return [
                 'name' => 'set_featured',
                 'title' => 'dropship::app.admin.system.set-as-featured',
                 'type' => 'boolean'
+            ], [
+                'name' => 'weight',
+                'title' => 'dropship::app.admin.system.default-weight',
+                'type' => 'text'
             ]
         ]
     ], [
