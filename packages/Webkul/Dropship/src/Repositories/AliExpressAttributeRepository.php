@@ -88,8 +88,8 @@ class AliExpressAttributeRepository extends Repository
         $groupAttributeCount = $attributeGroup->custom_attributes()->count();
 
         foreach ($superAttributes as $attributeData) {
-            $aliExpressAttribute = $this->findOnebyField('ali_express_attribute_id', $attributeData['attribute_id']);
-            
+            $aliExpressAttribute = $this->findOnebyField('ali_express_attribute_id', $attributeData['attr_id']);
+
             if ($aliExpressAttribute) {
                 $attribute = $aliExpressAttribute->attribute;
             } else {
@@ -102,7 +102,7 @@ class AliExpressAttributeRepository extends Repository
 
                     $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
                 }
-            
+
                 if (! $attribute) {
                     $label = substr($attributeData['title'], 0, -1);
 
@@ -112,7 +112,6 @@ class AliExpressAttributeRepository extends Repository
                                 'name' => $label
                             ];
                     }
-
                     $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
                             'code' => $attributeCode,
                             'type' => 'select',
@@ -124,7 +123,7 @@ class AliExpressAttributeRepository extends Repository
                 }
 
                 $aliExpressAttribute = $this->create([
-                        'ali_express_attribute_id' => $attributeData['attribute_id'],
+                        'ali_express_attribute_id' => $attributeData['attr_id'],
                         'attribute_id' => $attribute->id,
                     ]);
             }
@@ -135,7 +134,7 @@ class AliExpressAttributeRepository extends Repository
                 $attributeGroup->custom_attributes()->save($attribute, ['position' => $groupAttributeCount]);
             }
 
-            $this->aliExpressAttributeOptionRepository->checkAttributeOptionsAvailabiliy($aliExpressAttribute, $attributeData['value']);
+            $attributeOptionValue = $this->aliExpressAttributeOptionRepository->checkAttributeOptionsAvailabiliy($aliExpressAttribute, $attributeData['value']);
 
             $data[] = [
                     'id' => $attribute->id,

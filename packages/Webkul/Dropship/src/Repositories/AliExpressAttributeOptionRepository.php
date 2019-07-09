@@ -50,7 +50,7 @@ class AliExpressAttributeOptionRepository extends Repository
     }
 
     /**
-     * Checks if attribute options exist or create new one 
+     * Checks if attribute options exist or create new one
      *
      * @param AliExpressAttribute $aliExpressAttribute
      * @param array               $data
@@ -63,12 +63,12 @@ class AliExpressAttributeOptionRepository extends Repository
         foreach ($data as $key => $optionData) {
             if ($aliExpressAttribute->attribute->swatch_type == 'image') {
                 $aliExpressAttributeOption = $this->findOneWhere([
-                        'ali_express_attribute_option_id' => $optionData['option_id'],
-                        'ali_express_swatch_image' => $optionData['image'],
-                    ]);
+                        'ali_express_attribute_option_id' => $optionData['optionid'],
+                        'ali_express_swatch_image' => $optionData['img'],
+                ]);
             } else {
                 $aliExpressAttributeOption = $this->findOneWhere([
-                        'ali_express_attribute_option_id' => $optionData['option_id'],
+                        'ali_express_attribute_option_id' => $optionData['optionid'],
                         'ali_express_swatch_name' => $optionData['name']
                     ]);
             }
@@ -90,7 +90,7 @@ class AliExpressAttributeOptionRepository extends Repository
                         $attributeOption = null;
                     }
                 }
-                
+
                 if (! $attributeOption) {
                     $attributeOptionLabels = [];
 
@@ -105,10 +105,10 @@ class AliExpressAttributeOptionRepository extends Repository
                             'sort_order' => $key
                         ]));
 
-                    if ($aliExpressAttribute->attribute->swatch_type == 'image' && $optionData['image']) {
-                        $path = 'attribute_option/' . str_random(40) . '.' . pathinfo($optionData['image'], PATHINFO_EXTENSION);
+                    if ($aliExpressAttribute->attribute->swatch_type == 'image' && $optionData['img']) {
+                        $path = 'attribute_option/' . str_random(40) . '.' . pathinfo($optionData['img'], PATHINFO_EXTENSION);
 
-                        Storage::put($path, file_get_contents($optionData['image']));
+                        Storage::put($path, file_get_contents($optionData['img']));
 
                         $this->attributeOptionRepository->update([
                                 'swatch_value' => $path
@@ -118,11 +118,11 @@ class AliExpressAttributeOptionRepository extends Repository
 
                 $aliExpressAttributeOption = $this->create([
                         'ali_express_swatch_name' => $optionData['name'],
-                        'ali_express_swatch_image' => isset($optionData['image']) ? $optionData['image'] : '',
-                        'ali_express_attribute_option_id' => $optionData['option_id'],
+                        'ali_express_swatch_image' => isset($optionData['img']) ? $optionData['img'] : '',
+                        'ali_express_attribute_option_id' => $optionData['optionid'],
                         'ali_express_attribute_id' => $aliExpressAttribute->id,
                         'attribute_option_id' => $attributeOption->id,
-                    ]);
+                ]);
             }
         }
     }

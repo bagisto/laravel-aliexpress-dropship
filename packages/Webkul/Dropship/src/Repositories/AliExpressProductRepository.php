@@ -12,6 +12,7 @@ use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
+use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 
 /**
  * Seller AliExpress Product Reposotory
@@ -128,7 +129,7 @@ class AliExpressProductRepository extends Repository
     public function create(array $data)
     {
         DB::beginTransaction();
-        
+
         try {
             Event::fire('dropship.catalog.ali-express-product.create.before');
 
@@ -138,7 +139,7 @@ class AliExpressProductRepository extends Repository
                     'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
                 ]);
 
-            $optionalProductData = []; 
+            $optionalProductData = [];
             if ($product->type != 'configurable' && $inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
                 if (core()->getConfigData('dropship.settings.product_quantity.product_quantity') == 1) {
                     $qty = $data['qty'] ?? 0;
@@ -152,15 +153,15 @@ class AliExpressProductRepository extends Repository
             }
 
             $price = core()->convertToBasePrice($data['price'], $data['currency']);
-            
+
             if (! is_null(core()->getConfigData('dropship.settings.product_price.price'))) {
-                if (core()->getConfigData('dropship.settings.product_price.price') == 2 
+                if (core()->getConfigData('dropship.settings.product_price.price') == 2
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.custom_price'))) {
                     $price = core()->getConfigData('dropship.settings.product_price.custom_price');
-                } else if (core()->getConfigData('dropship.settings.product_price.price') == 3 
+                } else if (core()->getConfigData('dropship.settings.product_price.price') == 3
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.increase_price'))) {
                     $price += (($price / 100) * core()->getConfigData('dropship.settings.product_price.increase_price'));
-                } else if (core()->getConfigData('dropship.settings.product_price.price') == 4 
+                } else if (core()->getConfigData('dropship.settings.product_price.price') == 4
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.decrease_price'))) {
                     $price -= (($price / 100) * core()->getConfigData('dropship.settings.product_price.decrease_price'));
                 }
@@ -192,7 +193,7 @@ class AliExpressProductRepository extends Repository
 
             if (isset($data['super_attributes']) && ! empty($data['super_attributes'])) {
                 foreach ($data['super_attributes'] as $attributeData) {
-                    $aliExpressAttribute = $this->aliExpressAttributeRepository->findOnebyField('ali_express_attribute_id', $attributeData['attribute_id']);
+                    $aliExpressAttribute = $this->aliExpressAttributeRepository->findOnebyField('ali_express_attribute_id', $attributeData['attr_id']);
 
                     if ($aliExpressAttribute) {
                         $attribute = $attributeRepository->find($aliExpressAttribute->attribute_id);
@@ -214,8 +215,8 @@ class AliExpressProductRepository extends Repository
                     'product_id' => $product->id,
                     'ali_express_product_id' => $data['id'],
                     'ali_express_product_url' => $data['url'],
-                    'ali_express_product_description_url' => isset($data['description_url']) && $data['description_url'] != '' 
-                            ? $data['description_url'] 
+                    'ali_express_product_description_url' => isset($data['description_url']) && $data['description_url'] != ''
+                            ? $data['description_url']
                             : ''
                 ]);
 
@@ -225,7 +226,7 @@ class AliExpressProductRepository extends Repository
 
             throw $e;
         }
-        
+
         DB::commit();
 
         return $aliExpressProduct;
@@ -249,7 +250,7 @@ class AliExpressProductRepository extends Repository
             return;
 
         $htmlObject = $this->getHtmlObj($this->getHtmlByUrl($aliExpressProduct->ali_express_product_url));
-        
+
         if (empty($htmlObject))
             return;
 
@@ -306,15 +307,15 @@ class AliExpressProductRepository extends Repository
             Event::fire('catalog.product.update.before', $aliExpressProduct->product->id);
 
             $price = core()->convertToBasePrice($skuProduct->actSkuCalPrice, 'USD');
-        
+
             if (! is_null(core()->getConfigData('dropship.settings.product_price.price'))) {
-                if (core()->getConfigData('dropship.settings.product_price.price') == 2 
+                if (core()->getConfigData('dropship.settings.product_price.price') == 2
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.custom_price'))) {
                     $price = core()->getConfigData('dropship.settings.product_price.custom_price');
-                } else if (core()->getConfigData('dropship.settings.product_price.price') == 3 
+                } else if (core()->getConfigData('dropship.settings.product_price.price') == 3
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.increase_price'))) {
                     $price += (($price / 100) * core()->getConfigData('dropship.settings.product_price.increase_price'));
-                } else if (core()->getConfigData('dropship.settings.product_price.price') == 4 
+                } else if (core()->getConfigData('dropship.settings.product_price.price') == 4
                     && ! is_null(core()->getConfigData('dropship.settings.product_price.decrease_price'))) {
                     $price -= (($price / 100) * core()->getConfigData('dropship.settings.product_price.decrease_price'));
                 }
@@ -352,20 +353,32 @@ class AliExpressProductRepository extends Repository
      * @param array $data
      * @return mixed
      */
+
     public function createVariant($aliExpressProduct, $data = [])
     {
-        Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
 
+        Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
+        $image = "https://" . $data['custom_option']['img'];
+        $aliExpresSuperAttributeOptionImage = str_replace("_640x640.jpg", "_50x50.jpg", $image);
 
         $superAttributeOptionids = [];
 
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
-            $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
+            if ($aliExpresSuperAttributeOptionImage != "" && isset($aliExpresSuperAttributeOptionImage)) {
+                $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
+                    'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
+                    'ali_express_swatch_image' => $aliExpresSuperAttributeOptionImage
+                ]);
+            }
+
+            if (! $aliExpressAttributeOption) {
+                $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
                     'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key]
                 ]);
+            }
 
             if (! $aliExpressAttributeOption) {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneByField(
@@ -374,7 +387,6 @@ class AliExpressProductRepository extends Repository
             }
 
             $attributeOption = $aliExpressAttributeOption->attribute_option;
-
             $superAttributeOptionids[$attributeOption->attribute_id] = $attributeOption->id;
         }
 
@@ -386,27 +398,24 @@ class AliExpressProductRepository extends Repository
             } else {
                 $qty = core()->getConfigData('dropship.settings.product_quantity.custom_quantity');
             }
-
             $optionalProductData['inventories'] = [
                     $inventorySource => $qty
                 ];
         }
-
         $price = core()->convertToBasePrice($data['custom_option']['price'], $data['currency']);
-        
+
         if (! is_null(core()->getConfigData('dropship.settings.product_price.price'))) {
-            if (core()->getConfigData('dropship.settings.product_price.price') == 2 
+            if (core()->getConfigData('dropship.settings.product_price.price') == 2
                 && ! is_null(core()->getConfigData('dropship.settings.product_price.custom_price'))) {
                 $price = core()->getConfigData('dropship.settings.product_price.custom_price');
-            } else if (core()->getConfigData('dropship.settings.product_price.price') == 3 
+            } else if (core()->getConfigData('dropship.settings.product_price.price') == 3
                 && ! is_null(core()->getConfigData('dropship.settings.product_price.increase_price'))) {
                 $price += (($price / 100) * core()->getConfigData('dropship.settings.product_price.increase_price'));
-            } else if (core()->getConfigData('dropship.settings.product_price.price') == 4 
+            } else if (core()->getConfigData('dropship.settings.product_price.price') == 4
                 && ! is_null(core()->getConfigData('dropship.settings.product_price.decrease_price'))) {
                 $price -= (($price / 100) * core()->getConfigData('dropship.settings.product_price.decrease_price'));
             }
         }
-
         $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids, array_merge($optionalProductData, [
                 "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
                 "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
@@ -414,17 +423,15 @@ class AliExpressProductRepository extends Repository
                 "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
                 "status" => 1
             ]));
-
         $aliExpressVariant = parent::create([
                 'product_id' => $variant->id,
                 'parent_id' => $aliExpressProduct->id,
                 'combination_id' => $data['custom_option']['comb']
             ]);
-
         Event::fire('catalog.product.update.after', $variant->parent);
-
         return $variant;
     }
+
 
     /**
      * @param DOMDocument $htmlObj

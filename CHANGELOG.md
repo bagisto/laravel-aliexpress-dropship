@@ -2,6 +2,10 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v0.2.1(9th of July, 2019)** - *Release*
+
+* [comaptibility] Dropship module compatible with latest aliexpress layout.
+
 ## **v0.1.0(6th of March, 2019)** - *Release*
 
 * [feature] Import AliExpress products(simple and configurable) from AliExpress into your selected channel.
