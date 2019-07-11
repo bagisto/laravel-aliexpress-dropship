@@ -3,8 +3,8 @@
 namespace Webkul\Dropship\Repositories;
 
 use Illuminate\Container\Container as App;
-use Symfony\Component\DomCrawler\Crawler;
 use Carbon\Carbon;
+use Symfony\Component\DomCrawler\Crawler;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Product\Repositories\ProductReviewRepository;
 
@@ -137,7 +137,6 @@ class AliExpressProductReviewRepository extends Repository
                 $reviewParams['page'] = $i;
 
                 $reviewsDomCrawler = $this->getDomCrawler($this->submitReviewsPage($reviewParams));
-                
                 $result = $this->getReviewsData($reviewsDomCrawler);
 
                 if (! count($result)) {
@@ -158,8 +157,8 @@ class AliExpressProductReviewRepository extends Repository
 
                 $saveReviewCount++;
             }
-            
-            $this->create(array_merge(['product_id' => $data['product_id']], $review)); 
+
+            $this->create(array_merge(['product_id' => $data['product_id']], $review));
         }
     }
 
@@ -192,7 +191,6 @@ class AliExpressProductReviewRepository extends Repository
 
         return $reviews;
     }
- 
     /**
      * @param array $reviewParams
      * @return array
@@ -216,7 +214,6 @@ class AliExpressProductReviewRepository extends Repository
 
         return $result;
     }
- 
     /**
      * @param string $url
      * @return array

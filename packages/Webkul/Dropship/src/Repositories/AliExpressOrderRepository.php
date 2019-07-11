@@ -111,7 +111,6 @@ class AliExpressOrderRepository extends Repository
                             'order_item_id' => $childItem->id,
                             'parent_id' => $aliExpressOrderItem->id
                         ]);
-                    
                     $queryParams['wk_product_ids'][] = $aliExpressProduct->ali_express_product_id;
                     $queryParams['wk_product_qty'][] = $item->qty_ordered;
                     $queryParams['sku_attributes'][] = str_replace('_', '+', $aliExpressChildProduct->combination_id);
@@ -130,7 +129,6 @@ class AliExpressOrderRepository extends Repository
                         . '&wk_product_ids=' . implode('_', $queryParams['wk_product_ids']);
 
             $aliExpressOrder->ali_express_add_cart_url = $productUrl . (parse_url($productUrl, PHP_URL_QUERY) ? '&' : '?') . $queryString;
-                
             $aliExpressOrder->save();
 
             Event::fire('dropship.sales.order.save.after', $aliExpressOrder);

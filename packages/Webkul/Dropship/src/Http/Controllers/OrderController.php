@@ -48,7 +48,6 @@ class OrderController extends Controller
             foreach ($this->aliExpressOrderRepository->findWhere(['is_placed' => 0]) as $aliExpressOrder) {
                 $orders[] = $aliExpressOrder->id . "_" . $aliExpressOrder->order_id . "_" . $aliExpressOrder->order->customer_full_name . "_0";
             }
-
             $response = response($callback . '(' . json_encode([
                     'orders' => implode("+", $orders)
                 ]) . ')');
@@ -60,7 +59,6 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
-        
         return $response;
     }
 
@@ -97,7 +95,6 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
-        
         return $response;
     }
 
@@ -121,6 +118,7 @@ class OrderController extends Controller
 
                     $result = [
                             'contact_name' => $address->name,
+                            'contact_email' => $address->email,
                             'shipping_address_1' => $address->address1,
                             'shipping_address_2' => $address->address2,
                             'shipping_city' => $address->city,
@@ -152,7 +150,6 @@ class OrderController extends Controller
 
         $response = response($callback . '(' . json_encode($result) . ')');
         $response->header('Content-Type', 'application/javascript');
-        
         return $response;
     }
 }

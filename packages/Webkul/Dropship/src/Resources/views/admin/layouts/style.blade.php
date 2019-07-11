@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="{{ bagisto_asset('css/dropship-admin.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/default/assets/css/dropship-admin.css') }}">

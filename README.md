@@ -58,6 +58,12 @@ php artisan vendor:publish
 -> Press 0 and then press enter to publish all assets and configurations.
 ~~~
 
+~~~
+
+composer require symfony/dom-crawler
+
+~~~
+
 * Add the following line to the crontab for automatic product information updation (eg. Price and Quantity)
 
 ~~~

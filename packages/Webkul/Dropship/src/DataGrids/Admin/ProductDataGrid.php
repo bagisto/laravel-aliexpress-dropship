@@ -21,14 +21,16 @@ class ProductDataGrid extends DataGrid
 
     public function prepareQueryBuilder()
     {
-        $queryBuilder = DB::table('products_grid')
-                ->leftJoin('products', 'products_grid.product_id', '=', 'products.id')
-                ->join('dropship_ali_express_products', 'products_grid.product_id', '=', 'dropship_ali_express_products.product_id')
+        $queryBuilder = DB::table('product_flat')
+                ->leftJoin('products', 'product_flat.product_id', '=', 'products.id')
+                ->join('dropship_ali_express_products', 'product_flat.product_id', '=', 'dropship_ali_express_products.product_id')
+                ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
 
-                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'products_grid.product_id', 'products_grid.sku', 'products_grid.name', 'products_grid.price', 'products_grid.quantity');
-        
+                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')->orderBy('product_id','desc');
 
-        $this->addFilter('sku', 'products_grid.sku');
+        $this->addFilter('sku', 'product_flat.sku');
+        $this->addFilter('product_id', 'product_flat.product_id');
+        $this->addFilter('price', 'product_flat.price');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -40,7 +42,8 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.product-id'),
             'type' => 'number',
             'searchable' => false,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -48,7 +51,8 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.sku'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -56,7 +60,8 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.name'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -64,7 +69,8 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.price'),
             'type' => 'price',
             'sortable' => true,
-            'searchable' => false
+            'searchable' => false,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -73,14 +79,24 @@ class ProductDataGrid extends DataGrid
             'type' => 'number',
             'sortable' => true,
             'searchable' => false,
+            'filterable' => true
         ]);
     }
 
     public function prepareActions() {
         $this->addAction([
             'type' => 'Edit',
+            'method' => 'GET', // use GET request only for redirect purposes
             'route' => 'admin.catalog.products.edit',
             'icon' => 'icon pencil-lg-icon'
+        ]);
+
+        $this->addAction([
+            'type' => 'Delete',
+            'method' => 'POST', // use GET request only for redirect purposes
+            'route' => 'admin.catalog.products.delete',
+            // 'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
+            'icon' => 'icon trash-icon'
         ]);
     }
 }
