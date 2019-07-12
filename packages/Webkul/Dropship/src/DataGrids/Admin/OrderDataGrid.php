@@ -24,9 +24,11 @@ class OrderDataGrid extends DataGrid
         $queryBuilder = DB::table('dropship_ali_express_orders')
                 ->leftJoin('orders', 'dropship_ali_express_orders.order_id', '=', 'orders.id')
                 ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'orders.base_grand_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
-                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name'));
+                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'))->orderBy('created_at','desc');
 
         $this->addFilter('customer_name', DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name)'));
+        $this->addFilter('created_at', 'dropship_ali_express_orders.created_at');
+        $this->addFilter('id', 'orders.id');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -38,16 +40,27 @@ class OrderDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.orders.order-id'),
             'type' => 'number',
             'searchable' => false,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
         ]);
 
-        
+
         $this->addColumn([
             'index' => 'base_grand_total',
             'label' => trans('dropship::app.admin.orders.grand-total'),
             'type' => 'price',
             'searchable' => false,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
+        ]);
+
+        $this->addColumn([
+            'index' => 'customer_email',
+            'label' => 'Email',
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => false,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -55,7 +68,8 @@ class OrderDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.orders.billed-to'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true
+            'sortable' => true,
+            'filterable' => true
         ]);
 
         $this->addColumn([
@@ -64,6 +78,7 @@ class OrderDataGrid extends DataGrid
             'type' => 'string',
             'sortable' => true,
             'searchable' => false,
+            'filterable' => true,
             'closure' => true,
             'wrapper' => function ($row) {
                 if ($row->status == 'processing')
@@ -83,18 +98,20 @@ class OrderDataGrid extends DataGrid
             }
         ]);
 
+// code starts
         $this->addColumn([
             'index' => 'is_placed',
             'label' => trans('dropship::app.admin.orders.place-order'),
             'type' => 'string',
             'sortable' => false,
             'searchable' => false,
+            'filterable' => true,
             'closure' => true,
             'wrapper' => function ($row) {
                 if ($row->is_placed)
                     return trans('dropship::app.admin.orders.already-placed');
 
-                return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.add-to-cart') . '</a>';
+                return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
             }
         ]);
 
@@ -103,7 +120,8 @@ class OrderDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.orders.order-date'),
             'type' => 'string',
             'sortable' => true,
-            'searchable' => false
+            'searchable' => false,
+            'filterable' => true
         ]);
     }
 
@@ -111,6 +129,7 @@ class OrderDataGrid extends DataGrid
     {
         $this->addAction([
             'type' => 'View',
+            'method' => 'GET', // use GET request only for redirect purposes
             'route' => 'admin.sales.orders.view',
             'icon' => 'icon eye-icon'
         ]);

@@ -103,10 +103,17 @@ return [
                         'value' => 2
                     ], [
                         'title' => 'dropship::app.admin.system.increase',
+<<<<<<< HEAD
                         'value' => 2
                     ], [
                         'title' => 'dropship::app.admin.system.decrease',
                         'value' => 2
+=======
+                        'value' => 3
+                    ], [
+                        'title' => 'dropship::app.admin.system.decrease',
+                        'value' => 4
+>>>>>>> b2e1c595cfc3eef690315aca694cbcfdee9eecba
                     ]
                 ]
             ], [
@@ -153,7 +160,12 @@ return [
                 'name' => 'default_inventory_source',
                 'title' => 'dropship::app.admin.system.default-inventory-source',
                 'type' => 'select',
+<<<<<<< HEAD
                 'repository' => 'Webkul\Dropship\Repositories\InventorySourceRepository@getInventorySources'
+=======
+                'repository' => 'Webkul\Dropship\Repositories\InventorySourceRepository@getInventorySources',
+
+>>>>>>> b2e1c595cfc3eef690315aca694cbcfdee9eecba
             ]
         ]
     ], [

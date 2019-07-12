@@ -71,7 +71,8 @@ return [
             'fraud' => 'Fraud',
             'place-order' => 'Place Order',
             'add-to-cart' => 'Add to cart',
-            'already-placed' => 'Already Placed'
+            'already-placed' => 'Already Placed',
+            'checkout-on-aliexpress' => 'Checkout on Aliexpress'
         ],
 
         'products' => [
