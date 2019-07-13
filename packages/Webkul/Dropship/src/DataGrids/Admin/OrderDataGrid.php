@@ -24,7 +24,7 @@ class OrderDataGrid extends DataGrid
         $queryBuilder = DB::table('dropship_ali_express_orders')
                 ->leftJoin('orders', 'dropship_ali_express_orders.order_id', '=', 'orders.id')
                 ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'orders.base_grand_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
-                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'))->orderBy('created_at','desc');
+                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'));
 
         $this->addFilter('customer_name', DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name)'));
         $this->addFilter('created_at', 'dropship_ali_express_orders.created_at');
@@ -39,7 +39,7 @@ class OrderDataGrid extends DataGrid
             'index' => 'id',
             'label' => trans('dropship::app.admin.orders.order-id'),
             'type' => 'number',
-            'searchable' => false,
+            'searchable' => true,
             'sortable' => true,
             'filterable' => true
         ]);
@@ -68,7 +68,7 @@ class OrderDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.orders.billed-to'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true,
+            'sortable' => false,
             'filterable' => true
         ]);
 
@@ -76,7 +76,7 @@ class OrderDataGrid extends DataGrid
             'index' => 'status',
             'label' => trans('dropship::app.admin.orders.status'),
             'type' => 'string',
-            'sortable' => true,
+            'sortable' => false,
             'searchable' => false,
             'filterable' => true,
             'closure' => true,
@@ -119,7 +119,7 @@ class OrderDataGrid extends DataGrid
         $this->addColumn([
             'index' => 'created_at',
             'label' => trans('dropship::app.admin.orders.order-date'),
-            'type' => 'string',
+            'type' => 'datetime',
             'sortable' => true,
             'searchable' => false,
             'filterable' => true

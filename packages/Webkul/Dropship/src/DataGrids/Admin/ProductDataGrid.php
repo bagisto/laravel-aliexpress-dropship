@@ -26,11 +26,13 @@ class ProductDataGrid extends DataGrid
                 ->join('dropship_ali_express_products', 'product_flat.product_id', '=', 'dropship_ali_express_products.product_id')
                 ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
 
-                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')->orderBy('product_id','desc');
+                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity');
 
         $this->addFilter('sku', 'product_flat.sku');
         $this->addFilter('product_id', 'product_flat.product_id');
         $this->addFilter('price', 'product_flat.price');
+        $this->addFilter('name', 'product_flat.name');
+        $this->addFilter('quantity', 'product_inventories.qty');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -98,5 +100,16 @@ class ProductDataGrid extends DataGrid
             // 'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
             'icon' => 'icon trash-icon'
         ]);
+    }
+
+    public function prepareMassActions() {
+        $this->addMassAction([
+            'type' => 'delete',
+            'label' => 'Delete',
+            'action' => route('admin.catalog.products.massdelete'),
+            'method' => 'POST'
+        ]);
+
+        $this->enableMassAction = true;
     }
 }

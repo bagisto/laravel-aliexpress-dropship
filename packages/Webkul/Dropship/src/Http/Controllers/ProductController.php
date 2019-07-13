@@ -101,14 +101,12 @@ class ProductController extends Controller
 
             if (! $aliExpressProduct) {
 
-
                 $response = response($callback . '(' . json_encode([
                         'success' => false,
                         'message' => 'Product import error.',
                     ]) . ')');
             } else {
                 $productVariant = $this->aliExpressProductRepository->createVariant($aliExpressProduct, request()->all());
-
 
 
                 $response = response($callback . '(' . json_encode([
