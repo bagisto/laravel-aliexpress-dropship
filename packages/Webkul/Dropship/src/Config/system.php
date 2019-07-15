@@ -82,7 +82,8 @@ return [
             ], [
                 'name' => 'weight',
                 'title' => 'dropship::app.admin.system.default-weight',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ]
         ]
     ], [
@@ -100,7 +101,7 @@ return [
                         'value' => 1
                     ], [
                         'title' => 'dropship::app.admin.system.custom-price',
-                        'value' => 2
+                        'value' => 2,
                     ], [
                         'title' => 'dropship::app.admin.system.increase',
 <<<<<<< HEAD
@@ -120,7 +121,8 @@ return [
                 'name' => 'custom_price',
                 'title' => 'dropship::app.admin.system.custom-price',
                 'info' => 'dropship::app.admin.system.custom-price-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ], [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
@@ -155,7 +157,8 @@ return [
                 'name' => 'custom_quantity',
                 'title' => 'dropship::app.admin.system.custom-quantity',
                 'info' => 'dropship::app.admin.system.custom-quantity-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'numeric'
             ], [
                 'name' => 'default_inventory_source',
                 'title' => 'dropship::app.admin.system.default-inventory-source',

@@ -353,7 +353,6 @@ class AliExpressProductRepository extends Repository
 
     public function createVariant($aliExpressProduct, $data = [])
     {
-
         Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
