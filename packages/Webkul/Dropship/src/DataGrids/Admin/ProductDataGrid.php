@@ -101,15 +101,4 @@ class ProductDataGrid extends DataGrid
             'icon' => 'icon trash-icon'
         ]);
     }
-
-    public function prepareMassActions() {
-        $this->addMassAction([
-            'type' => 'delete',
-            'label' => 'Delete',
-            'action' => route('admin.catalog.products.massdelete'),
-            'method' => 'POST'
-        ]);
-
-        $this->enableMassAction = true;
-    }
 }
