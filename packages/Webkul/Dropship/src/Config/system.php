@@ -160,22 +160,23 @@ return [
 
             ]
         ]
-    ], [
-        'key' => 'dropship.settings.auto_updation',
-        'name' => 'dropship::app.admin.system.auto-updation',
-        'sort' => 5,
-        'fields' => [
-            [
-                'name' => 'quantity',
-                'title' => 'dropship::app.admin.system.quantity',
-                'type' => 'boolean',
-            ], [
-                'name' => 'price',
-                'title' => 'dropship::app.admin.system.price',
-                'type' => 'boolean',
-            ]
-        ]
     ]
+    // , [
+    //     'key' => 'dropship.settings.auto_updation',
+    //     'name' => 'dropship::app.admin.system.auto-updation',
+    //     'sort' => 5,
+    //     'fields' => [
+    //         [
+    //             'name' => 'quantity',
+    //             'title' => 'dropship::app.admin.system.quantity',
+    //             'type' => 'boolean',
+    //         ], [
+    //             'name' => 'price',
+    //             'title' => 'dropship::app.admin.system.price',
+    //             'type' => 'boolean',
+    //         ]
+    //     ]
+    // ]
 ];
 
 ?>

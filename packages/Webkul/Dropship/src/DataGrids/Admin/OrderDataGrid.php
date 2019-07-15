@@ -98,14 +98,13 @@ class OrderDataGrid extends DataGrid
             }
         ]);
 
-// code starts
         $this->addColumn([
             'index' => 'is_placed',
             'label' => trans('dropship::app.admin.orders.place-order'),
             'type' => 'string',
             'sortable' => false,
             'searchable' => false,
-            'filterable' => true,
+            'filterable' => false,
             'closure' => true,
             'wrapper' => function ($row) {
                 if ($row->is_placed)
@@ -114,7 +113,6 @@ class OrderDataGrid extends DataGrid
                 return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
             }
         ]);
-// code ends
 
         $this->addColumn([
             'index' => 'created_at',

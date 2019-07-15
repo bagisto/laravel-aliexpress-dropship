@@ -356,33 +356,34 @@ class AliExpressProductRepository extends Repository
 
     public function createVariant($aliExpressProduct, $data = [])
     {
+        $aliExpressAttributeOption = "";
+
         Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
-        $image = "https://" . $data['custom_option']['img'];
-        $aliExpresSuperAttributeOptionImage = str_replace("_640x640.jpg", "_50x50.jpg", $image);
+        $aliExpresSuperAttributeOptionImage = $data['custom_option']['img'];
 
         $superAttributeOptionids = [];
 
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
-            if ($aliExpresSuperAttributeOptionImage != "" && isset($aliExpresSuperAttributeOptionImage)) {
+            if ($aliExpresSuperAttributeOptionImage != "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
                     'ali_express_swatch_image' => $aliExpresSuperAttributeOptionImage
                 ]);
             }
 
-            if (! $aliExpressAttributeOption) {
+            if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
                     'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key]
                 ]);
             }
 
-            if (! $aliExpressAttributeOption) {
+            if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneByField(
                         'ali_express_attribute_option_id', $aliExpressSuperAttributeOptionId
-                    );
+                );
             }
 
             $attributeOption = $aliExpressAttributeOption->attribute_option;
