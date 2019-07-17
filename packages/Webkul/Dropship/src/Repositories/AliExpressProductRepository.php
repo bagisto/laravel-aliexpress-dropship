@@ -363,6 +363,7 @@ class AliExpressProductRepository extends Repository
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
         $aliExpresSuperAttributeOptionImage = $data['custom_option']['img'];
 
+
         $superAttributeOptionids = [];
 
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
@@ -388,8 +389,8 @@ class AliExpressProductRepository extends Repository
 
             $attributeOption = $aliExpressAttributeOption->attribute_option;
             $superAttributeOptionids[$attributeOption->attribute_id] = $attributeOption->id;
-        }
 
+        }
         $optionalProductData = [];
 
         if ($inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {

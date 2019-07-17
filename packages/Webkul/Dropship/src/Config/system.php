@@ -120,12 +120,14 @@ return [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
                 'info' => 'dropship::app.admin.system.increase-price-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ], [
                 'name' => 'decrease_price',
                 'title' => 'dropship::app.admin.system.decrease-price',
                 'info' => 'dropship::app.admin.system.decrease-price-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ]
         ]
     ], [
