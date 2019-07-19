@@ -98,14 +98,13 @@ class OrderDataGrid extends DataGrid
             }
         ]);
 
-// code starts
         $this->addColumn([
             'index' => 'is_placed',
             'label' => trans('dropship::app.admin.orders.place-order'),
             'type' => 'string',
             'sortable' => false,
             'searchable' => false,
-            'filterable' => true,
+            'filterable' => false,
             'closure' => true,
             'wrapper' => function ($row) {
                 if ($row->is_placed)

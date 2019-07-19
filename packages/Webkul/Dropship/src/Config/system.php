@@ -127,12 +127,14 @@ return [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
                 'info' => 'dropship::app.admin.system.increase-price-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ], [
                 'name' => 'decrease_price',
                 'title' => 'dropship::app.admin.system.decrease-price',
                 'info' => 'dropship::app.admin.system.decrease-price-info',
-                'type' => 'text'
+                'type' => 'text',
+                'validation' => 'decimal'
             ]
         ]
     ], [
@@ -171,22 +173,23 @@ return [
 >>>>>>> b2e1c595cfc3eef690315aca694cbcfdee9eecba
             ]
         ]
-    ], [
-        'key' => 'dropship.settings.auto_updation',
-        'name' => 'dropship::app.admin.system.auto-updation',
-        'sort' => 5,
-        'fields' => [
-            [
-                'name' => 'quantity',
-                'title' => 'dropship::app.admin.system.quantity',
-                'type' => 'boolean',
-            ], [
-                'name' => 'price',
-                'title' => 'dropship::app.admin.system.price',
-                'type' => 'boolean',
-            ]
-        ]
     ]
+    // , [
+    //     'key' => 'dropship.settings.auto_updation',
+    //     'name' => 'dropship::app.admin.system.auto-updation',
+    //     'sort' => 5,
+    //     'fields' => [
+    //         [
+    //             'name' => 'quantity',
+    //             'title' => 'dropship::app.admin.system.quantity',
+    //             'type' => 'boolean',
+    //         ], [
+    //             'name' => 'price',
+    //             'title' => 'dropship::app.admin.system.price',
+    //             'type' => 'boolean',
+    //         ]
+    //     ]
+    // ]
 ];
 
 ?>

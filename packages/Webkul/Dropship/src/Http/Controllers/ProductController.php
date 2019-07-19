@@ -87,14 +87,12 @@ class ProductController extends Controller
     public function importVariation()
     {
         $callback = request()->input('callback');
-
         try {
             $this->validate(request(), [
                 'product_id' => 'required',
                 'custom_option.comb' => 'required',
                 'custom_option.price' => 'required'
             ]);
-
             $aliExpressProduct = $this->aliExpressProductRepository->findOneWhere([
                     'product_id' => request()->input('product_id'),
                 ]);
@@ -120,7 +118,7 @@ class ProductController extends Controller
             $response = response($callback . '(' . json_encode([
                     'success' => false,
                     'message' => $e->getMessage(),
-                ]) . ')');
+            ]) . ')');
         }
 
         $response->header('Content-Type', 'application/javascript');

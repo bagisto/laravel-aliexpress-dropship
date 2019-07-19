@@ -26,7 +26,7 @@ class ProductDataGrid extends DataGrid
                 ->join('dropship_ali_express_products', 'product_flat.product_id', '=', 'dropship_ali_express_products.product_id')
                 ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
 
-                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity');
+                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')->orderBy('dropship_ali_express_products.id', 'desc');
 
         $this->addFilter('sku', 'product_flat.sku');
         $this->addFilter('product_id', 'product_flat.product_id');
