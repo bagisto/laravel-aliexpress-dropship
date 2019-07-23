@@ -5,6 +5,8 @@ namespace Webkul\Dropship\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Webkul\Dropship\Http\Controllers\Controller;
 use Webkul\Dropship\Repositories\AliExpressProductRepository;
+use Webkul\Product\Repositories\ProductRepository as Product;
+
 
 /**
  * Product controller
@@ -26,6 +28,14 @@ class ProductController extends Controller
      *
      * @var array
     */
+
+      /**
+     * ProductRepository object
+     *
+     * @var array
+     */
+    protected $product;
+
     protected $aliExpressProductRepository;
 
     /**
@@ -35,12 +45,15 @@ class ProductController extends Controller
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository
+        AliExpressProductRepository $aliExpressProductRepository,
+        Product $product
     )
     {
         $this->_config = request('_config');
 
         $this->aliExpressProductRepository = $aliExpressProductRepository;
+
+        $this->product = $product;
     }
 
     /**
@@ -51,5 +64,27 @@ class ProductController extends Controller
     public function index()
     {
         return view($this->_config['view']);
+    }
+
+    /**
+     * Mass Delete the products
+     *
+     * @return response
+     */
+    public function massDestroy()
+    {
+        $productIds = explode(',', request()->input('indexes'));
+
+        foreach ($productIds as $productId) {
+            $product = $this->product->find($productId);
+
+            if (isset($product)) {
+                $this->product->delete($productId);
+            }
+        }
+
+        session()->flash('success', trans('admin::app.catalog.products.mass-delete-success'));
+
+        return redirect()->route($this->_config['redirect']);
     }
 }

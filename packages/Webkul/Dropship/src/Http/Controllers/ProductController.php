@@ -93,9 +93,10 @@ class ProductController extends Controller
                 'custom_option.comb' => 'required',
                 'custom_option.price' => 'required'
             ]);
+
             $aliExpressProduct = $this->aliExpressProductRepository->findOneWhere([
-                    'product_id' => request()->input('product_id'),
-                ]);
+                'product_id' => request()->input('product_id'),
+            ]);
 
             if (! $aliExpressProduct) {
 

@@ -14,8 +14,9 @@ Route::group(['middleware' => ['web']], function () {
                 'view' => 'dropship::admin.orders.index'
             ])->name('admin.dropship.orders.index');
 
+            Route::post('products/massdelete', 'Webkul\Dropship\Http\Controllers\Admin\ProductController@massDestroy')->defaults('_config', [
+                'redirect' => 'admin.dropship.products.index'
+            ])->name('dropship.catalog.products.massdelete');
         });
-
     });
-
 });
