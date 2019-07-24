@@ -14,6 +14,7 @@ use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 
+
 /**
  * Seller AliExpress Product Reposotory
  *
@@ -138,7 +139,7 @@ class AliExpressProductRepository extends Repository
                     'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
                 ]);
 
-            $optionalProductData = [];
+                $optionalProductData = [];
             if ($product->type != 'configurable' && $inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
                 if (core()->getConfigData('dropship.settings.product_quantity.product_quantity') == 1) {
                     $qty = $data['qty'] ?? 0;
@@ -168,6 +169,7 @@ class AliExpressProductRepository extends Repository
 
             $product = $this->productRepository->update(array_merge($optionalProductData, [
                     'channel' => core()->getConfigData('dropship.settings.product.default_channel'),
+                    'sku' => $data['id'],
                     'locale' => core()->getConfigData('dropship.settings.product.default_locale'),
                     'name' => $data['name'],
                     'price' => $price,
@@ -354,14 +356,14 @@ class AliExpressProductRepository extends Repository
     public function createVariant($aliExpressProduct, $data = [])
     {
         $aliExpressAttributeOption = "";
+        $superAttributeOptionids = [];
 
         Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
+
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
         $aliExpresSuperAttributeOptionImage = $data['custom_option']['img'];
 
-
-        $superAttributeOptionids = [];
 
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
             if ($aliExpresSuperAttributeOptionImage != "") {
@@ -380,14 +382,15 @@ class AliExpressProductRepository extends Repository
 
             if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneByField(
-                        'ali_express_attribute_option_id', $aliExpressSuperAttributeOptionId
+                    'ali_express_attribute_option_id', $aliExpressSuperAttributeOptionId
                 );
             }
 
             $attributeOption = $aliExpressAttributeOption->attribute_option;
             $superAttributeOptionids[$attributeOption->attribute_id] = $attributeOption->id;
-
+            $aliExpressAttributeOption = "";
         }
+
         $optionalProductData = [];
 
         if ($inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
@@ -398,8 +401,9 @@ class AliExpressProductRepository extends Repository
             }
             $optionalProductData['inventories'] = [
                     $inventorySource => $qty
-                ];
+            ];
         }
+
         $price = core()->convertToBasePrice($data['custom_option']['price'], $data['currency']);
 
         if (! is_null(core()->getConfigData('dropship.settings.product_price.price'))) {
@@ -414,6 +418,11 @@ class AliExpressProductRepository extends Repository
                 $price -= (($price / 100) * core()->getConfigData('dropship.settings.product_price.decrease_price'));
             }
         }
+
+        $locale = request()->setLocale('locale') ?: core()->getConfigData('dropship.settings.product.default_locale');
+
+        \App::setLocale($locale);
+
         $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids, array_merge($optionalProductData, [
                 "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
                 "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
@@ -427,9 +436,9 @@ class AliExpressProductRepository extends Repository
                 'combination_id' => $data['custom_option']['comb']
             ]);
         Event::fire('catalog.product.update.after', $variant->parent);
+
         return $variant;
     }
-
 
     /**
      * @param DOMDocument $htmlObj

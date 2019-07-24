@@ -22,11 +22,14 @@ class ProductDataGrid extends DataGrid
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('product_flat')
-                ->leftJoin('products', 'product_flat.product_id', '=', 'products.id')
-                ->join('dropship_ali_express_products', 'product_flat.product_id', '=', 'dropship_ali_express_products.product_id')
-                ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
-
-                ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')->orderBy('dropship_ali_express_products.id', 'desc');
+            ->leftJoin('products', 'product_flat.product_id', '=', 'products.id')
+            ->join('dropship_ali_express_products', 'product_flat.product_id', '=', 'dropship_ali_express_products.product_id')
+            ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
+            ->select('product_flat.product_id')
+            ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')
+            ->where('channel', core()->getCurrentChannelCode())
+            ->where('locale', app()->getLocale())
+            ->orderBy('dropship_ali_express_products.id', 'desc');
 
         $this->addFilter('sku', 'product_flat.sku');
         $this->addFilter('product_id', 'product_flat.product_id');
@@ -100,5 +103,16 @@ class ProductDataGrid extends DataGrid
             // 'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
             'icon' => 'icon trash-icon'
         ]);
+    }
+
+    public function prepareMassActions() {
+        $this->addMassAction([
+            'type' => 'delete',
+            'label' => 'Delete',
+            'action' => route('dropship.catalog.products.massdelete'),
+            'method' => 'DELETE'
+        ]);
+
+        $this->enableMassAction = true;
     }
 }

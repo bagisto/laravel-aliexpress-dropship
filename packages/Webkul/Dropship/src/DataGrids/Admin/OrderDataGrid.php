@@ -24,7 +24,8 @@ class OrderDataGrid extends DataGrid
         $queryBuilder = DB::table('dropship_ali_express_orders')
                 ->leftJoin('orders', 'dropship_ali_express_orders.order_id', '=', 'orders.id')
                 ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'orders.base_grand_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
-                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'));
+                ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'))
+                ->orderBy('dropship_ali_express_orders.id', 'desc');
 
         $this->addFilter('customer_name', DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name)'));
         $this->addFilter('created_at', 'dropship_ali_express_orders.created_at');
