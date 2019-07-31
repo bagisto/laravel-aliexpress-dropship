@@ -13,6 +13,8 @@ use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
+use Carbon\Carbon;
+
 
 
 /**
@@ -213,13 +215,13 @@ class AliExpressProductRepository extends Repository
             }
 
             $aliExpressProduct = parent::create([
-                    'product_id' => $product->id,
-                    'ali_express_product_id' => $data['id'],
-                    'ali_express_product_url' => $data['url'],
-                    'ali_express_product_description_url' => isset($data['description_url']) && $data['description_url'] != ''
-                            ? $data['description_url']
-                            : ''
-                ]);
+                'product_id' => $product->id,
+                'ali_express_product_id' => $data['id'],
+                'ali_express_product_url' => $data['url'],
+                'ali_express_product_description_url' => isset($data['description_url']) && $data['description_url'] != ''
+                        ? $data['description_url']
+                        : ''
+            ]);
 
             Event::fire('dropship.catalog.ali-express-product.create.after', $aliExpressProduct);
         } catch (\Exception $e) {
@@ -257,11 +259,11 @@ class AliExpressProductRepository extends Repository
 
         $skuProducts = $this->getAliExpressSkuProducts($htmlObject);
 
-        if (! isset($skuProducts[0]->skuVal))
+        if (! isset($skuProducts->skuModule->skuPriceList[0]->skuVal))
             return;
 
         if ($aliExpressProduct->product->type == 'configurable') {
-            foreach ($skuProducts as $skuProduct) {
+            foreach ($skuProducts->skuModule->skuPriceList as $skuProduct) {
                 $aliExpressChildProduct = $this->findOneWhere([
                         'parent_id' => $aliExpressProduct->id,
                         'combination_id' => str_replace(',', '_', $skuProduct->skuPropIds)
@@ -274,7 +276,7 @@ class AliExpressProductRepository extends Repository
                 }
             }
         } else {
-            $this->updatePriceInventory($skuProducts[0]->skuVal, $aliExpressProduct);
+            $this->updatePriceInventory($skuProducts->skuModule->skuPriceList[0]->skuVal, $aliExpressProduct);
 
             $aliExpressProduct->touch();
         }
@@ -425,13 +427,14 @@ class AliExpressProductRepository extends Repository
 
         \App::setLocale($locale);
 
-        $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids, array_merge($optionalProductData, [
+        $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids,       array_merge($optionalProductData, [
                 "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
                 "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
                 "price" => $price,
                 "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
                 "status" => 1
             ]));
+
         $aliExpressVariant = parent::create([
                 'product_id' => $variant->id,
                 'parent_id' => $aliExpressProduct->id,
@@ -453,8 +456,8 @@ class AliExpressProductRepository extends Repository
         $scripts = $xp->query("//script");
 
         foreach ($scripts as $script) {
-            if (preg_match('#var skuProducts=(.*?)];#', $script->nodeValue, $matches)) {
-                $skuProducts = json_decode($matches[1] . ']');
+            if (preg_match('#window.runParams = { data: (.*), csrfToken#', trim(preg_replace('/\s\s+/', ' ',   $script->nodeValue)), $matches)) {
+                $skuProducts = json_decode($matches[1]);
             }
         }
 

@@ -47,7 +47,7 @@ class DropshipServiceProvider extends ServiceProvider
 
         $this->registerCommands();
     }
-    
+
     /**
      * Register package config.
      *

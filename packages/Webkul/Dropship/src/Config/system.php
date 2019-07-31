@@ -114,20 +114,23 @@ return [
                 'name' => 'custom_price',
                 'title' => 'dropship::app.admin.system.custom-price',
                 'info' => 'dropship::app.admin.system.custom-price-info',
-                'type' => 'text',
-                'validation' => 'decimal'
+                'type' => 'depands',
+                'depand' => 'price:2',
+                'validation' => 'required|decimal',
             ], [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
                 'info' => 'dropship::app.admin.system.increase-price-info',
-                'type' => 'text',
-                'validation' => 'decimal'
+                'type' => 'depands',
+                'depand' => 'price:3',
+                'validation' => 'required|decimal',
             ], [
                 'name' => 'decrease_price',
                 'title' => 'dropship::app.admin.system.decrease-price',
                 'info' => 'dropship::app.admin.system.decrease-price-info',
-                'type' => 'text',
-                'validation' => 'decimal'
+                'type' => 'depands',
+                'depand' => 'price:4',
+                'validation' => 'required|decimal',
             ]
         ]
     ], [
@@ -163,22 +166,22 @@ return [
             ]
         ]
     ]
-    // , [
-    //     'key' => 'dropship.settings.auto_updation',
-    //     'name' => 'dropship::app.admin.system.auto-updation',
-    //     'sort' => 5,
-    //     'fields' => [
-    //         [
-    //             'name' => 'quantity',
-    //             'title' => 'dropship::app.admin.system.quantity',
-    //             'type' => 'boolean',
-    //         ], [
-    //             'name' => 'price',
-    //             'title' => 'dropship::app.admin.system.price',
-    //             'type' => 'boolean',
-    //         ]
-    //     ]
-    // ]
+    , [
+        'key' => 'dropship.settings.auto_updation',
+        'name' => 'dropship::app.admin.system.auto-updation',
+        'sort' => 5,
+        'fields' => [
+            [
+                'name' => 'quantity',
+                'title' => 'dropship::app.admin.system.quantity',
+                'type' => 'boolean',
+            ], [
+                'name' => 'price',
+                'title' => 'dropship::app.admin.system.price',
+                'type' => 'boolean',
+            ]
+        ]
+    ]
 ];
 
 ?>
