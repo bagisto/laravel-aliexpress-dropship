@@ -19,6 +19,8 @@ class ProductDataGrid extends DataGrid
      */
     public $index = 'product_id';
 
+    protected $sortOrder = 'desc'; //asc or desc
+
     public function prepareQueryBuilder()
     {
         $queryBuilder = DB::table('product_flat')
@@ -28,8 +30,7 @@ class ProductDataGrid extends DataGrid
             ->select('product_flat.product_id')
             ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')
             ->where('channel', core()->getCurrentChannelCode())
-            ->where('locale', app()->getLocale())
-            ->orderBy('dropship_ali_express_products.id', 'desc');
+            ->where('locale', app()->getLocale());
 
         $this->addFilter('sku', 'product_flat.sku');
         $this->addFilter('product_id', 'product_flat.product_id');
@@ -56,7 +57,7 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.sku'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true,
+            'sortable' => false,
             'filterable' => true
         ]);
 
@@ -65,7 +66,7 @@ class ProductDataGrid extends DataGrid
             'label' => trans('dropship::app.admin.products.name'),
             'type' => 'string',
             'searchable' => true,
-            'sortable' => true,
+            'sortable' => false,
             'filterable' => true
         ]);
 
