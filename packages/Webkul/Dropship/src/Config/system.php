@@ -83,6 +83,7 @@ return [
                 'name' => 'weight',
                 'title' => 'dropship::app.admin.system.default-weight',
                 'type' => 'text',
+                'value' => 0,
                 'validation' => 'decimal'
             ]
         ]
@@ -117,6 +118,8 @@ return [
                 'type' => 'depands',
                 'depand' => 'price:2',
                 'validation' => 'required|decimal',
+                'channel_based' => true,
+                'locale_based' => true
             ], [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
@@ -124,6 +127,8 @@ return [
                 'type' => 'depands',
                 'depand' => 'price:3',
                 'validation' => 'required|decimal',
+                'channel_based' => true,
+                'locale_based' => true
             ], [
                 'name' => 'decrease_price',
                 'title' => 'dropship::app.admin.system.decrease-price',
@@ -131,6 +136,8 @@ return [
                 'type' => 'depands',
                 'depand' => 'price:4',
                 'validation' => 'required|decimal',
+                'channel_based' => true,
+                'locale_based' => true
             ]
         ]
     ], [
@@ -155,7 +162,8 @@ return [
                 'name' => 'custom_quantity',
                 'title' => 'dropship::app.admin.system.custom-quantity',
                 'info' => 'dropship::app.admin.system.custom-quantity-info',
-                'type' => 'text',
+                'type' => 'depands',
+                'depand' => 'product_quantity:2',
                 'validation' => 'numeric'
             ], [
                 'name' => 'default_inventory_source',

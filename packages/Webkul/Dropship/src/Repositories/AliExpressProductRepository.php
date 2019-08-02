@@ -16,7 +16,6 @@ use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Carbon\Carbon;
 
 
-
 /**
  * Seller AliExpress Product Reposotory
  *
@@ -368,22 +367,19 @@ class AliExpressProductRepository extends Repository
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
         $aliExpresSuperAttributeOptionImage = $data['custom_option']['img'];
 
-
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
-            if ($aliExpresSuperAttributeOptionImage != "") {
+            if (isset($aliExpresSuperAttributeOptionImage) && $aliExpresSuperAttributeOptionImage != "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
                     'ali_express_swatch_image' => $aliExpresSuperAttributeOptionImage
                 ]);
             }
-
             if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
-                    'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key]
+                    'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key],
                 ]);
             }
-
             if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneByField(
                     'ali_express_attribute_option_id', $aliExpressSuperAttributeOptionId
@@ -394,7 +390,6 @@ class AliExpressProductRepository extends Repository
             $superAttributeOptionids[$attributeOption->attribute_id] = $attributeOption->id;
             $aliExpressAttributeOption = "";
         }
-
         $optionalProductData = [];
 
         if ($inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {

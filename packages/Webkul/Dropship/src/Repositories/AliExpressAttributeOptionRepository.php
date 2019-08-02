@@ -105,6 +105,7 @@ class AliExpressAttributeOptionRepository extends Repository
                             'sort_order' => $key
                         ]));
 
+
                     if ($aliExpressAttribute->attribute->swatch_type == 'image' && $optionData['img']) {
                         $path = 'attribute_option/' . str_random(40) . '.' . pathinfo($optionData['img'], PATHINFO_EXTENSION);
 

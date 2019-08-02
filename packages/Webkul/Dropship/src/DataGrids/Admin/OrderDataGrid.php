@@ -25,8 +25,14 @@ class OrderDataGrid extends DataGrid
     {
         $queryBuilder = DB::table('dropship_ali_express_orders')
                 ->leftJoin('orders', 'dropship_ali_express_orders.order_id', '=', 'orders.id')
-                ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'orders.base_grand_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
+                ->leftJoin('dropship_ali_express_order_items as aliexpress_order_items', function($leftJoin) {
+                    $leftJoin->on('aliexpress_order_items.ali_express_order_id', '=', 'orders.id')
+                    ->where('aliexpress_order_items.parent_id', null);
+                })
+                ->leftjoin('order_items', 'aliexpress_order_items.order_item_id', '=', 'order_items.id')
+                ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'order_items.base_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
                 ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'));
+
 
         $this->addFilter('customer_name', DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name)'));
         $this->addFilter('created_at', 'dropship_ali_express_orders.created_at');
@@ -48,7 +54,7 @@ class OrderDataGrid extends DataGrid
 
 
         $this->addColumn([
-            'index' => 'base_grand_total',
+            'index' => 'base_total',
             'label' => trans('dropship::app.admin.orders.grand-total'),
             'type' => 'price',
             'searchable' => false,
