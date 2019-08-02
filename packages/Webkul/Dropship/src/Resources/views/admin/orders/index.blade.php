@@ -13,13 +13,11 @@
                     {{ __('dropship::app.admin.orders.title') }}
                 </h1>
             </div>
-
             <div class="page-action">
             </div>
         </div>
 
         <div class="page-content">
-
             {!! app('Webkul\Dropship\DataGrids\Admin\OrderDataGrid')->render() !!}
 
         </div>

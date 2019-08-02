@@ -90,7 +90,6 @@ class AliExpressAttributeOptionRepository extends Repository
                         $attributeOption = null;
                     }
                 }
-
                 if (! $attributeOption) {
                     $attributeOptionLabels = [];
 

@@ -228,7 +228,6 @@ class AliExpressProductRepository extends Repository
 
             throw $e;
         }
-
         DB::commit();
 
         return $aliExpressProduct;
@@ -252,7 +251,6 @@ class AliExpressProductRepository extends Repository
             return;
 
         $htmlObject = $this->getHtmlObj($this->getHtmlByUrl($aliExpressProduct->ali_express_product_url));
-
         if (empty($htmlObject))
             return;
 

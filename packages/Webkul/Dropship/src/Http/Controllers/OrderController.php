@@ -59,7 +59,6 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
-
         return $response;
     }
 
@@ -96,7 +95,6 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
-
         return $response;
     }
 
@@ -151,7 +149,6 @@ class OrderController extends Controller
 
         $response = response($callback . '(' . json_encode($result) . ')');
         $response->header('Content-Type', 'application/javascript');
-
         return $response;
     }
 }

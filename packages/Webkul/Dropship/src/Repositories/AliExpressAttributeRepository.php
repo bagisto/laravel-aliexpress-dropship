@@ -101,7 +101,6 @@ class AliExpressAttributeRepository extends Repository
 
                     $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
                 }
-
                 if (! $attribute) {
                     $label = substr($attributeData['title'], 0, -1);
 

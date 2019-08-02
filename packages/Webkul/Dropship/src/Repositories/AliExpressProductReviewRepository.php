@@ -137,7 +137,6 @@ class AliExpressProductReviewRepository extends Repository
                 $reviewParams['page'] = $i;
 
                 $reviewsDomCrawler = $this->getDomCrawler($this->submitReviewsPage($reviewParams));
-
                 $result = $this->getReviewsData($reviewsDomCrawler);
 
                 if (! count($result)) {
@@ -192,7 +191,6 @@ class AliExpressProductReviewRepository extends Repository
 
         return $reviews;
     }
-
     /**
      * @param array $reviewParams
      * @return array
@@ -216,7 +214,6 @@ class AliExpressProductReviewRepository extends Repository
 
         return $result;
     }
-
     /**
      * @param string $url
      * @return array
