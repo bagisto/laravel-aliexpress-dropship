@@ -79,6 +79,7 @@ class AliExpressAttributeRepository extends Repository
      */
     public function importSuperAttributes($superAttributes)
     {
+
         $data = [];
         $attributeFamily = $this->attributeFamilyRepository->find(core()->getConfigData('dropship.settings.product.default_attribute_family'));
 
@@ -88,19 +89,17 @@ class AliExpressAttributeRepository extends Repository
 
         foreach ($superAttributes as $attributeData) {
             $aliExpressAttribute = $this->findOnebyField('ali_express_attribute_id', $attributeData['attr_id']);
-
-            if ($aliExpressAttribute) {
-                $attribute = $aliExpressAttribute->attribute;
-            } else {
+            if (strtolower(substr($attributeData['title'], 0, -1)) == "color" && $attributeData['swatch_type'] == "text") {
                 $attributeCode = $this->getAttributeCodeByTitle($attributeData['title']);
-
                 $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
 
+
                 if ($attribute && $attribute->swatch_type != $attributeData['swatch_type']) {
-                    $attributeCode = 'ali_express_' . $attributeCode;
+                    $attributeCode = 'ali_express_text_' . $attributeCode;
 
                     $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
                 }
+
                 if (! $attribute) {
                     $label = substr($attributeData['title'], 0, -1);
 
@@ -126,6 +125,80 @@ class AliExpressAttributeRepository extends Repository
                     ]);
             }
 
+            else if ($attributeData['swatch_type'] == "color") {
+                $attributeCode = $this->getAttributeCodeByTitle($attributeData['title']);
+
+                $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
+
+                if ($attribute && $attribute->swatch_type != $attributeData['swatch_type']) {
+                    $attributeCode = 'ali_express_' . $attributeCode.'_code';
+                    $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
+                }
+
+                if (! $attribute) {
+                    $label = substr($attributeData['title'], 0, -1);
+
+                    $attributeLabels = [];
+                    foreach (core()->getAllLocales() as $locale) {
+                        $attributeLabels[$locale->code] = [
+                                'name' => $label
+                            ];
+                    }
+                    $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
+                            'code' => $attributeCode,
+                            'type' => 'select',
+                            'swatch_type' => $attributeData['swatch_type'],
+                            'admin_name' => substr($attributeData['title'], 0, -1),
+                            'is_configurable' => 1,
+                            'is_filterable' => 1,
+                        ]));
+                }
+
+                $aliExpressAttribute = $this->create([
+                        'ali_express_attribute_id' => $attributeData['attr_id'],
+                        'attribute_id' => $attribute->id,
+                    ]);
+            }
+            else {
+                if ($aliExpressAttribute) {
+                    $attribute = $aliExpressAttribute->attribute;
+                } else {
+                    $attributeCode = $this->getAttributeCodeByTitle($attributeData['title']); //color
+                    $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
+
+
+                    if ($attribute && $attribute->swatch_type != $attributeData['swatch_type']) {
+                        $attributeCode = 'ali_express_' . $attributeCode;
+
+                        $attribute = $this->attributeRepository->findOneWhere(['code' => $attributeCode]);
+                    }
+
+                    if (! $attribute) {
+                        $label = substr($attributeData['title'], 0, -1);
+
+                        $attributeLabels = [];
+                        foreach (core()->getAllLocales() as $locale) {
+                            $attributeLabels[$locale->code] = [
+                                    'name' => $label
+                                ];
+                        }
+                        $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
+                                'code' => $attributeCode,
+                                'type' => 'select',
+                                'swatch_type' => $attributeData['swatch_type'],
+                                'admin_name' => substr($attributeData['title'], 0, -1),
+                                'is_configurable' => 1,
+                                'is_filterable' => 1,
+                            ]));
+                    }
+
+                    $aliExpressAttribute = $this->create([
+                            'ali_express_attribute_id' => $attributeData['attr_id'],
+                            'attribute_id' => $attribute->id,
+                        ]);
+                }
+            }
+
             if (! $attributeGroup->custom_attributes()->where('id', $attribute->id)->get()->count()) {
                 $groupAttributeCount++;
 
@@ -135,10 +208,10 @@ class AliExpressAttributeRepository extends Repository
             $attributeOptionValue = $this->aliExpressAttributeOptionRepository->checkAttributeOptionsAvailabiliy($aliExpressAttribute, $attributeData['value']);
 
             $data[] = [
-                    'id' => $attribute->id,
-                    'title' => substr($attributeData['title'], 0, -1),
-                    'status' => 1
-                ];
+                'id' => $attribute->id,
+                'title' => substr($attributeData['title'], 0, -1),
+                'status' => 1
+            ];
         }
 
         return $data;

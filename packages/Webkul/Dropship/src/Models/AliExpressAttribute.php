@@ -9,7 +9,7 @@ use Webkul\Attribute\Models\AttributeProxy;
 class AliExpressAttribute extends Model implements AliExpressAttributeContract
 {
     public $timestamps = false;
-    
+
     protected $table = 'dropship_ali_express_attributes';
 
     protected $fillable = ['ali_express_attribute_id', 'attribute_id'];

@@ -90,6 +90,7 @@ class AliExpressAttributeOptionRepository extends Repository
                         $attributeOption = null;
                     }
                 }
+
                 if (! $attributeOption) {
                     $attributeOptionLabels = [];
 
@@ -115,7 +116,6 @@ class AliExpressAttributeOptionRepository extends Repository
                             ], $attributeOption->id);
                     }
                 }
-
                 $aliExpressAttributeOption = $this->create([
                         'ali_express_swatch_name' => $optionData['name'],
                         'ali_express_swatch_image' => isset($optionData['img']) ? $optionData['img'] : '',
