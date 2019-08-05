@@ -79,7 +79,6 @@ class AliExpressAttributeRepository extends Repository
      */
     public function importSuperAttributes($superAttributes)
     {
-
         $data = [];
         $attributeFamily = $this->attributeFamilyRepository->find(core()->getConfigData('dropship.settings.product.default_attribute_family'));
 
