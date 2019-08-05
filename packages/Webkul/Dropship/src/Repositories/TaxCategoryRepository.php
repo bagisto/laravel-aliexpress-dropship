@@ -24,6 +24,7 @@ class TaxCategoryRepository extends BaseTaxCategoryRepository
         foreach ($this->all() as $taxCategory) {
             $taxCategories[$taxCategory->id] = $taxCategory->name;
         }
+        array_unshift($taxCategories, " ");
 
         return $taxCategories;
     }

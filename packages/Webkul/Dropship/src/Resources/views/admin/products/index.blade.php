@@ -13,6 +13,7 @@
                     {{ __('dropship::app.admin.products.title') }}
                 </h1>
             </div>
+
             <div class="page-action">
                 <button class="btn btn-lg btn-primary" style="display: none">
                     {{ __('dropship::app.admin.products.import-btn-title') }}
@@ -21,6 +22,7 @@
         </div>
 
         <div class="page-content">
+
             {!! app('Webkul\Dropship\DataGrids\Admin\ProductDataGrid')->render() !!}
 
         </div>

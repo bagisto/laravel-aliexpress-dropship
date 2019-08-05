@@ -107,7 +107,6 @@ class ProductController extends Controller
             } else {
                 $productVariant = $this->aliExpressProductRepository->createVariant($aliExpressProduct, request()->all());
 
-
                 $response = response($callback . '(' . json_encode([
                         'success' => true,
                         'message' => 'Product Successfully Imported.',
@@ -123,6 +122,7 @@ class ProductController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
+
         return $response;
     }
 }

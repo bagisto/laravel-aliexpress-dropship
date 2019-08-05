@@ -10,9 +10,9 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
         \Webkul\Dropship\Models\AliExpressProduct::class,
         \Webkul\Dropship\Models\AliExpressProductReview::class,
         \Webkul\Dropship\Models\AliExpressProductImage::class,
-        \Webkul\Dropship\Models\AliExpressAttribute::class,
         \Webkul\Dropship\Models\AliExpressAttributeOption::class,
         \Webkul\Dropship\Models\AliExpressOrder::class,
         \Webkul\Dropship\Models\AliExpressOrderItem::class,
+        \Webkul\Dropship\Models\AliExpressAttribute::class,
     ];
 }

@@ -59,6 +59,7 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
+
         return $response;
     }
 
@@ -95,6 +96,7 @@ class OrderController extends Controller
         }
 
         $response->header('Content-Type', 'application/javascript');
+
         return $response;
     }
 
@@ -115,7 +117,6 @@ class OrderController extends Controller
                     $address = $aliExpressOrder->order->shipping_address ?? $aliExpressOrder->order->billing_address;
 
                     $state = app('Webkul\Core\Repositories\CountryStateRepository')->findOneByField('code', $address->state);
-
                     $result = [
                             'contact_name' => $address->name,
                             'contact_email' => $address->email,
@@ -150,6 +151,7 @@ class OrderController extends Controller
 
         $response = response($callback . '(' . json_encode($result) . ')');
         $response->header('Content-Type', 'application/javascript');
+
         return $response;
     }
 }

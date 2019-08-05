@@ -25,14 +25,14 @@ It packs in lots of demanding features that allows your business to scale in no 
 
 ### 3. Installation:
 
-* Unzip the respective extension zip and then merge "packages" and "storage" folders into project root directory.
+* Unzip the respective extension zip and then merge "packages" folders into project root directory.
 * Goto config/app.php file and add following line under 'providers'
 
 ~~~
 Webkul\Dropship\Providers\DropshipServiceProvider::class
 ~~~
 
-* Goto config.json file and add following line under 'psr-4'
+* Goto composer.json file and add following line under 'psr-4'
 
 ~~~
 "Webkul\\Dropship\\": "packages/Webkul/Dropship"

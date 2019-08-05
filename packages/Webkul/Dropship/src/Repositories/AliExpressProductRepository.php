@@ -16,7 +16,6 @@ use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Carbon\Carbon;
 
 
-
 /**
  * Seller AliExpress Product Reposotory
  *
@@ -131,6 +130,7 @@ class AliExpressProductRepository extends Repository
      */
     public function create(array $data)
     {
+        $demoArray = [];
         DB::beginTransaction();
         try {
             Event::fire('dropship.catalog.ali-express-product.create.before');
@@ -140,6 +140,8 @@ class AliExpressProductRepository extends Repository
                     'type' => isset($data['super_attributes']) && ! empty($data['super_attributes']) ? 'configurable' : 'simple',
                     'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
                 ]);
+
+
 
                 $optionalProductData = [];
             if ($product->type != 'configurable' && $inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
@@ -196,17 +198,27 @@ class AliExpressProductRepository extends Repository
 
             if (isset($data['super_attributes']) && ! empty($data['super_attributes'])) {
                 foreach ($data['super_attributes'] as $attributeData) {
-                    $aliExpressAttribute = $this->aliExpressAttributeRepository->findOnebyField('ali_express_attribute_id', $attributeData['attr_id']);
+                    $aliExpressAttributes = $this->aliExpressAttributeRepository->findWhere(['ali_express_attribute_id' => $attributeData['attr_id']]);
 
-                    if ($aliExpressAttribute) {
-                        $attribute = $attributeRepository->find($aliExpressAttribute->attribute_id);
-                    } else {
-                        $attributeCode = $this->aliExpressAttributeRepository->getAttributeCodeByTitle($attributeData['title']);
+                    $unique = $aliExpressAttributes->unique('attribute_id');
 
-                        $attribute = $attributeRepository->findOneWhere(['code' => $attributeCode]);
+                    $aliExpressAttributes = $unique->values()->all();
+
+                    foreach ($aliExpressAttributes as $aliExpressAttribute) {
+                        if ($aliExpressAttribute) {
+                            $attribute = $attributeRepository->find($aliExpressAttribute->attribute_id);
+
+                            if ($attribute->swatch_type == $attributeData['swatch_type']) {
+                                $product->super_attributes()->attach($attribute->id);
+                            }
+                        } else {
+                            $attributeCode = $this->aliExpressAttributeRepository->getAttributeCodeByTitle($attributeData['title']);
+
+                            $attribute = $attributeRepository->findOneWhere(['code' => $attributeCode]);
+
+                            $product->super_attributes()->attach($attribute->id);
+                        }
                     }
-
-                    $product->super_attributes()->attach($attribute->id);
                 }
             }
 
@@ -229,6 +241,7 @@ class AliExpressProductRepository extends Repository
 
             throw $e;
         }
+
         DB::commit();
 
         return $aliExpressProduct;
@@ -252,6 +265,7 @@ class AliExpressProductRepository extends Repository
             return;
 
         $htmlObject = $this->getHtmlObj($this->getHtmlByUrl($aliExpressProduct->ali_express_product_url));
+
         if (empty($htmlObject))
             return;
 
@@ -364,24 +378,24 @@ class AliExpressProductRepository extends Repository
 
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
-        $aliExpresSuperAttributeOptionImage = $data['custom_option']['img'];
 
+        $imageData = str_replace("640x640","50x50", $data['custom_option']['img']);
+
+        $aliExpresSuperAttributeOptionImage = "https://".$imageData;
 
         foreach ($aliExpresSuperAttributeOptionIds as $key => $aliExpressSuperAttributeOptionId) {
-            if ($aliExpresSuperAttributeOptionImage != "") {
+            if (isset($aliExpresSuperAttributeOptionImage) && $aliExpresSuperAttributeOptionImage != "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
                     'ali_express_swatch_image' => $aliExpresSuperAttributeOptionImage
                 ]);
             }
-
             if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneWhere([
                     'ali_express_attribute_option_id' => $aliExpressSuperAttributeOptionId,
-                    'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key]
+                    'ali_express_swatch_name' => $aliExpresSuperAttributeOptionNames[$key],
                 ]);
             }
-
             if ($aliExpressAttributeOption == "") {
                 $aliExpressAttributeOption = $this->aliExpressAttributeOptionRepository->findOneByField(
                     'ali_express_attribute_option_id', $aliExpressSuperAttributeOptionId
@@ -392,7 +406,6 @@ class AliExpressProductRepository extends Repository
             $superAttributeOptionids[$attributeOption->attribute_id] = $attributeOption->id;
             $aliExpressAttributeOption = "";
         }
-
         $optionalProductData = [];
 
         if ($inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {

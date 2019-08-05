@@ -72,13 +72,10 @@ class AliExpressAttributeOptionRepository extends Repository
                         'ali_express_swatch_name' => $optionData['name']
                     ]);
             }
-
             if (! $aliExpressAttributeOption) {
                 $attributeOption = null;
-
                 if ($aliExpressAttribute->attribute->swatch_type != 'image') {
                     $attributeOption = $this->attributeOptionRepository->getModel()::whereTranslation('label', $optionData['name'])->first();
-
                     if (! $attributeOption) {
                         $attributeOption = $this->attributeOptionRepository->findOneWhere([
                                 'attribute_id' => $aliExpressAttribute->attribute_id,
@@ -90,6 +87,7 @@ class AliExpressAttributeOptionRepository extends Repository
                         $attributeOption = null;
                     }
                 }
+
                 if (! $attributeOption) {
                     $attributeOptionLabels = [];
 
@@ -104,6 +102,13 @@ class AliExpressAttributeOptionRepository extends Repository
                             'sort_order' => $key
                         ]));
 
+                    if ($aliExpressAttribute->attribute->swatch_type == 'color') {
+                        $this->attributeOptionRepository->update([
+                                'swatch_value' => $optionData['name']
+                            ], $attributeOption->id);
+                    }
+
+
                     if ($aliExpressAttribute->attribute->swatch_type == 'image' && $optionData['img']) {
                         $path = 'attribute_option/' . str_random(40) . '.' . pathinfo($optionData['img'], PATHINFO_EXTENSION);
 
@@ -114,7 +119,6 @@ class AliExpressAttributeOptionRepository extends Repository
                             ], $attributeOption->id);
                     }
                 }
-
                 $aliExpressAttributeOption = $this->create([
                         'ali_express_swatch_name' => $optionData['name'],
                         'ali_express_swatch_image' => isset($optionData['img']) ? $optionData['img'] : '',
