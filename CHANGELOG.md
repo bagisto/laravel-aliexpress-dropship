@@ -2,9 +2,13 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+## **v0.1.2(11th of October, 2019)** - _Release_
+
+- [Bug] Custom theme compatibility issue fixed.
+
 ## **v0.1.1(5th of August, 2019)** - _Release_
 
-- [comaptibility] Dropship module compatible with latest aliexpress layout.
+- [compatibility] Dropship module compatible with latest aliexpress layout.
 
 ## **v0.1.0(6th of March, 2019)** - _Release_
 
