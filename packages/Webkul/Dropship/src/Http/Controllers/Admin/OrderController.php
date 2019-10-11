@@ -27,6 +27,8 @@ class OrderController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('admin');
+
         $this->_config = request('_config');
     }
 
