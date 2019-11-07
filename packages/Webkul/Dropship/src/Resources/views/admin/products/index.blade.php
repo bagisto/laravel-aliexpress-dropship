@@ -1,4 +1,4 @@
-@extends('dropship::admin.layouts.content')
+@extends('admin::layouts.content')
 
 @section('page_title')
     {{ __('dropship::app.admin.products.title') }}
@@ -29,8 +29,3 @@
     </div>
 
 @stop
-
-<!-- @push('scripts')
-
-
-@endpush -->

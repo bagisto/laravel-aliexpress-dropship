@@ -51,6 +51,8 @@ class ProductController extends Controller
     {
         $this->_config = request('_config');
 
+        $this->middleware('admin');
+
         $this->aliExpressProductRepository = $aliExpressProductRepository;
 
         $this->product = $product;
