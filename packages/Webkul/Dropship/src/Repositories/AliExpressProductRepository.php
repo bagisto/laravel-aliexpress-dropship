@@ -132,18 +132,18 @@ class AliExpressProductRepository extends Repository
     {
         $demoArray = [];
         DB::beginTransaction();
+
         try {
             Event::dispatch('dropship.catalog.ali-express-product.create.before');
 
             $product = $this->productRepository->create([
-                    'sku' => $data['id'],
-                    'type' => isset($data['super_attributes']) && ! empty($data['super_attributes']) ? 'configurable' : 'simple',
-                    'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
-                ]);
+                'sku' => $data['id'],
+                'type' => isset($data['super_attributes']) && ! empty($data['super_attributes']) ? 'configurable' : 'simple',
+                'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
+            ]);
 
+            $optionalProductData = [];
 
-
-                $optionalProductData = [];
             if ($product->type != 'configurable' && $inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
                 if (core()->getConfigData('dropship.settings.product_quantity.product_quantity') == 1) {
                     $qty = $data['qty'] ?? 0;
@@ -186,6 +186,7 @@ class AliExpressProductRepository extends Repository
                     'meta_title' => $data['meta_title'],
                     'meta_description' => $data['meta_description'],
                     'meta_keywords' => $data['meta_keywords'],
+                    'guest_checkout' => core()->getConfigData('dropship.settings.product.guest_checkout'),
                     'categories' => [core()->getConfigData('dropship.settings.product.default_category')],
                     'tax_category_id' => core()->getConfigData('dropship.settings.product.default_tax_category'),
                     'url_key' => $data['id'],

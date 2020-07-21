@@ -80,6 +80,10 @@ return [
                 'title' => 'dropship::app.admin.system.set-as-featured',
                 'type' => 'boolean'
             ], [
+                'name' => 'guest_checkout',
+                'title' => 'dropship::app.admin.system.guest_checkout',
+                'type' => 'boolean',
+            ], [
                 'name' => 'weight',
                 'title' => 'dropship::app.admin.system.default-weight',
                 'type' => 'text',
