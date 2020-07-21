@@ -87,10 +87,10 @@ class ProductDataGrid extends DataGrid
             'searchable' => false,
             'filterable' => true,
             'wrapper'    => function($value) {
-                if (is_null($value->price)) {
+                if (is_null($value->quantity)) {
                     return 0;
                 } else {
-                    return number_format($value->price, 2);
+                    return number_format($value->quantity, 2);
                 }
             },
         ]);
