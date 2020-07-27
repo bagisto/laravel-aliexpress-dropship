@@ -168,7 +168,7 @@ return [
                 'info' => 'dropship::app.admin.system.custom-quantity-info',
                 'type' => 'depends',
                 'depend' => 'product_quantity:2',
-                'validation' => 'numeric'
+                'validation' => 'required|numeric'
             ], [
                 'name' => 'default_inventory_source',
                 'title' => 'dropship::app.admin.system.default-inventory-source',
