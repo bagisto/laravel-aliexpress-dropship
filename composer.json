@@ -1,0 +1,33 @@
+{
+    "name": "bagisto/aliexpress-dropship",
+    "description": "Automated the order process for AliExpress orders.",
+    "license": "MIT",
+    "keywords": [
+        "bagisto",
+        "aliexpress",
+        "dropship"
+    ],
+    "authors": [
+        {
+            "name": "Jitendra Singh",
+            "email": "jitendra@webkul.com"
+        }
+    ],
+    "require": {
+        "symfony/dom-crawler": "5.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Dropship\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Dropship\\Providers\\DropshipServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}
