@@ -88,7 +88,7 @@ return [
                 'title' => 'dropship::app.admin.system.default-weight',
                 'type' => 'text',
                 'value' => 0,
-                'validation' => 'decimal'
+                'validation' => 'decimal|required'
             ]
         ]
     ], [
