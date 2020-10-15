@@ -80,11 +80,15 @@ return [
                 'title' => 'dropship::app.admin.system.set-as-featured',
                 'type' => 'boolean'
             ], [
+                'name' => 'guest_checkout',
+                'title' => 'dropship::app.admin.system.guest_checkout',
+                'type' => 'boolean',
+            ], [
                 'name' => 'weight',
                 'title' => 'dropship::app.admin.system.default-weight',
                 'type' => 'text',
                 'value' => 0,
-                'validation' => 'decimal'
+                'validation' => 'decimal|required'
             ]
         ]
     ], [
@@ -115,8 +119,8 @@ return [
                 'name' => 'custom_price',
                 'title' => 'dropship::app.admin.system.custom-price',
                 'info' => 'dropship::app.admin.system.custom-price-info',
-                'type' => 'depands',
-                'depand' => 'price:2',
+                'type' => 'depends',
+                'depend' => 'price:2',
                 'validation' => 'required|decimal',
                 'channel_based' => true,
                 'locale_based' => true
@@ -124,8 +128,8 @@ return [
                 'name' => 'increase_price',
                 'title' => 'dropship::app.admin.system.increase-price',
                 'info' => 'dropship::app.admin.system.increase-price-info',
-                'type' => 'depands',
-                'depand' => 'price:3',
+                'type' => 'depends',
+                'depend' => 'price:3',
                 'validation' => 'required|decimal',
                 'channel_based' => true,
                 'locale_based' => true
@@ -133,8 +137,8 @@ return [
                 'name' => 'decrease_price',
                 'title' => 'dropship::app.admin.system.decrease-price',
                 'info' => 'dropship::app.admin.system.decrease-price-info',
-                'type' => 'depands',
-                'depand' => 'price:4',
+                'type' => 'depends',
+                'depend' => 'price:4',
                 'validation' => 'required|decimal',
                 'channel_based' => true,
                 'locale_based' => true
@@ -162,9 +166,9 @@ return [
                 'name' => 'custom_quantity',
                 'title' => 'dropship::app.admin.system.custom-quantity',
                 'info' => 'dropship::app.admin.system.custom-quantity-info',
-                'type' => 'depands',
-                'depand' => 'product_quantity:2',
-                'validation' => 'numeric'
+                'type' => 'depends',
+                'depend' => 'product_quantity:2',
+                'validation' => 'required|numeric'
             ], [
                 'name' => 'default_inventory_source',
                 'title' => 'dropship::app.admin.system.default-inventory-source',

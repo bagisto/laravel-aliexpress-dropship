@@ -30,7 +30,7 @@ class OrderDataGrid extends DataGrid
                     ->where('aliexpress_order_items.parent_id', null);
                 })
                 ->leftjoin('order_items', 'aliexpress_order_items.order_item_id', '=', 'order_items.id')
-                ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'order_items.base_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'dropship_ali_express_orders.is_placed')
+                ->select('orders.id', 'dropship_ali_express_orders.order_id', 'dropship_ali_express_orders.ali_express_add_cart_url', 'order_items.base_total', 'dropship_ali_express_orders.created_at', 'orders.status', 'orders.base_grand_total', 'dropship_ali_express_orders.is_placed')
                 ->addSelect(DB::raw('CONCAT(orders.customer_first_name, " ", orders.customer_last_name) as customer_name, orders.customer_email'));
 
 
@@ -54,7 +54,7 @@ class OrderDataGrid extends DataGrid
 
 
         $this->addColumn([
-            'index' => 'base_total',
+            'index' => 'base_grand_total',
             'label' => trans('dropship::app.admin.orders.grand-total'),
             'type' => 'price',
             'searchable' => false,
