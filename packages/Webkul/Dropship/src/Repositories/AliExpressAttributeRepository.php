@@ -154,9 +154,9 @@ class AliExpressAttributeRepository extends Repository
                 }
 
                 $aliExpressAttribute = $this->create([
-                        'ali_express_attribute_id' => $attributeData['attr_id'],
-                        'attribute_id' => $attribute->id,
-                    ]);
+                    'ali_express_attribute_id' => $attributeData['attr_id'],
+                    'attribute_id' => $attribute->id,
+                ]);
             }
             else {
                 if ($aliExpressAttribute) {

@@ -67,7 +67,7 @@ class AliExpressOrderRepository extends Repository
     {
         $order = $data['order'];
 
-        Event::fire('dropship.sales.order.save.before', $data);
+        Event::dispatch('dropship.sales.order.save.before', $data);
 
         $aliExpressOrder = null;
 
@@ -133,7 +133,7 @@ class AliExpressOrderRepository extends Repository
 
             $aliExpressOrder->save();
 
-            Event::fire('dropship.sales.order.save.after', $aliExpressOrder);
+            Event::dispatch('dropship.sales.order.save.after', $aliExpressOrder);
         }
     }
 }

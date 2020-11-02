@@ -29,8 +29,8 @@ class ProductDataGrid extends DataGrid
             ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
             ->select('product_flat.product_id')
             ->addSelect('dropship_ali_express_products.id as dropship_ali_express_product_id', 'product_flat.product_id', 'product_flat.sku', 'product_flat.name', 'product_flat.price', 'product_inventories.qty as quantity')
-            ->where('channel', core()->getCurrentChannelCode())
-            ->where('locale', app()->getLocale());
+            ->where('channel', core()->getConfigData('dropship.settings.product.default_channel'))
+            ->where('locale', core()->getConfigData('dropship.settings.product.default_locale'));
 
         $this->addFilter('sku', 'product_flat.sku');
         $this->addFilter('product_id', 'product_flat.product_id');
@@ -76,7 +76,7 @@ class ProductDataGrid extends DataGrid
             'type' => 'price',
             'sortable' => true,
             'searchable' => false,
-            'filterable' => true
+            'filterable' => true,
         ]);
 
         $this->addColumn([
@@ -85,7 +85,14 @@ class ProductDataGrid extends DataGrid
             'type' => 'number',
             'sortable' => true,
             'searchable' => false,
-            'filterable' => true
+            'filterable' => true,
+            'wrapper'    => function($value) {
+                if (is_null($value->quantity)) {
+                    return 0;
+                } else {
+                    return number_format($value->quantity, 2);
+                }
+            },
         ]);
     }
 

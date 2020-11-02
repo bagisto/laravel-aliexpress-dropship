@@ -132,18 +132,18 @@ class AliExpressProductRepository extends Repository
     {
         $demoArray = [];
         DB::beginTransaction();
+
         try {
-            Event::fire('dropship.catalog.ali-express-product.create.before');
+            Event::dispatch('dropship.catalog.ali-express-product.create.before');
 
             $product = $this->productRepository->create([
-                    'sku' => $data['id'],
-                    'type' => isset($data['super_attributes']) && ! empty($data['super_attributes']) ? 'configurable' : 'simple',
-                    'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
-                ]);
+                'sku' => $data['id'],
+                'type' => isset($data['super_attributes']) && ! empty($data['super_attributes']) ? 'configurable' : 'simple',
+                'attribute_family_id' => core()->getConfigData('dropship.settings.product.default_attribute_family')
+            ]);
 
+            $optionalProductData = [];
 
-
-                $optionalProductData = [];
             if ($product->type != 'configurable' && $inventorySource = core()->getConfigData('dropship.settings.product_quantity.default_inventory_source')) {
                 if (core()->getConfigData('dropship.settings.product_quantity.product_quantity') == 1) {
                     $qty = $data['qty'] ?? 0;
@@ -186,6 +186,7 @@ class AliExpressProductRepository extends Repository
                     'meta_title' => $data['meta_title'],
                     'meta_description' => $data['meta_description'],
                     'meta_keywords' => $data['meta_keywords'],
+                    'guest_checkout' => core()->getConfigData('dropship.settings.product.guest_checkout'),
                     'categories' => [core()->getConfigData('dropship.settings.product.default_category')],
                     'tax_category_id' => core()->getConfigData('dropship.settings.product.default_tax_category'),
                     'url_key' => $data['id'],
@@ -235,7 +236,7 @@ class AliExpressProductRepository extends Repository
                         : ''
             ]);
 
-            Event::fire('dropship.catalog.ali-express-product.create.after', $aliExpressProduct);
+            Event::dispatch('dropship.catalog.ali-express-product.create.after', $aliExpressProduct);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -255,6 +256,8 @@ class AliExpressProductRepository extends Repository
      */
     public function update(array $data, $id, $attribute = "id")
     {
+        $skuProducts = [];
+
         if (! core()->getConfigData('dropship.settings.auto_updation.quantity')
             && ! core()->getConfigData('dropship.settings.auto_updation.price'))
             return;
@@ -309,17 +312,17 @@ class AliExpressProductRepository extends Repository
                 $qty = core()->getConfigData('dropship.settings.product_quantity.custom_quantity');
             }
 
-            Event::fire('catalog.product.update.before', $aliExpressProduct->product->id);
+            Event::dispatch('catalog.product.update.before', $aliExpressProduct->product->id);
 
             $this->productInventoryRepository->saveInventories([
                     'inventories' => [$inventorySource => $qty]
                 ], $aliExpressProduct->product);
 
-            Event::fire('catalog.product.update.after', $aliExpressProduct->product()->first());
+            Event::dispatch('catalog.product.update.after', $aliExpressProduct->product()->first());
         }
 
         if (core()->getConfigData('dropship.settings.auto_updation.price')) {
-            Event::fire('catalog.product.update.before', $aliExpressProduct->product->id);
+            Event::dispatch('catalog.product.update.before', $aliExpressProduct->product->id);
 
             $price = core()->convertToBasePrice($skuProduct->actSkuCalPrice, 'USD');
 
@@ -359,7 +362,7 @@ class AliExpressProductRepository extends Repository
                     ], $attributeValue->id);
             }
 
-            Event::fire('catalog.product.update.after', $aliExpressProduct->product()->first());
+            Event::dispatch('catalog.product.update.after', $aliExpressProduct->product()->first());
         }
     }
 
@@ -374,7 +377,7 @@ class AliExpressProductRepository extends Repository
         $aliExpressAttributeOption = "";
         $superAttributeOptionids = [];
 
-        Event::fire('catalog.product.update.before', $aliExpressProduct->product_id);
+        Event::dispatch('catalog.product.update.before', $aliExpressProduct->product_id);
 
         $aliExpresSuperAttributeOptionIds = explode('_', $data['custom_option']['comb']);
         $aliExpresSuperAttributeOptionNames = explode('+', $data['custom_option']['text']);
@@ -438,20 +441,28 @@ class AliExpressProductRepository extends Repository
 
         \App::setLocale($locale);
 
-        $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids,       array_merge($optionalProductData, [
-                "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
-                "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
-                "price" => $price,
-                "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
-                "status" => 1
-            ]));
+        $variant = $aliExpressProduct->product->getTypeInstance()->createVariant($aliExpressProduct->product, $superAttributeOptionids, array_merge($optionalProductData, [
+            "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
+            "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
+            "price" => $price,
+            "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
+            "status" => 1
+        ]));
+
+        // $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids,       array_merge($optionalProductData, [
+        //         "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
+        //         "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
+        //         "price" => $price,
+        //         "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
+        //         "status" => 1
+        //     ]));
 
         $aliExpressVariant = parent::create([
                 'product_id' => $variant->id,
                 'parent_id' => $aliExpressProduct->id,
                 'combination_id' => $data['custom_option']['comb']
             ]);
-        Event::fire('catalog.product.update.after', $variant->parent);
+        Event::dispatch('catalog.product.update.after', $variant->parent);
 
         return $variant;
     }
@@ -462,6 +473,8 @@ class AliExpressProductRepository extends Repository
      */
     public function getAliExpressSkuProducts($htmlObj)
     {
+        $skuProducts = [];
+
         $xp = new \DOMXPath($htmlObj);
 
         $scripts = $xp->query("//script");

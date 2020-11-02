@@ -21,6 +21,7 @@ return [
             'enabled' => 'Enabled',
             'disabled' => 'Disabled',
             'display-packaging' => 'Display Packaging',
+            'guest_checkout' => 'Guest checkout',
             'display-shipping-time' => 'Display AliExpress Shipping Time',
             'default-channel' => 'Default Channel',
             'default-locale' => 'Default Locale',
