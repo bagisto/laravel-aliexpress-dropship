@@ -59,9 +59,11 @@ php artisan vendor:publish
 ~~~
 
 ~~~
+composer require laravel/helpers
+~~~
 
+~~~
 composer require symfony/dom-crawler
-
 ~~~
 
 * Add the following line to the crontab for automatic product information updation (eg. Price and Quantity)
