@@ -1,4 +1,4 @@
-# CHANGELOG for v1.2.x
+# CHANGELOG for v1.x.x
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
