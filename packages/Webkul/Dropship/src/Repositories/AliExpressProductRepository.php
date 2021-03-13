@@ -13,6 +13,7 @@ use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
+use Webkul\Product\Repositories\ProductImageRepository;
 use Carbon\Carbon;
 
 
@@ -74,6 +75,11 @@ class AliExpressProductRepository extends Repository
     protected $aliExpressAttributeOptionRepository;
 
     /**
+     * ProductImageRepository Object
+     */
+    protected $productImageRepository;
+
+    /**
      * Create a new controller instance.
      *
      * @param Webkul\Product\Repositories\ProductRepository                    $productRepository
@@ -94,10 +100,13 @@ class AliExpressProductRepository extends Repository
         AliExpressProductImageRepository $aliExpressProductImageRepository,
         AliExpressAttributeRepository $aliExpressAttributeRepository,
         AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
+        ProductImageRepository $productImageRepository,
         App $app
     )
     {
         $this->productRepository = $productRepository;
+
+        $this->productImageRepository = $productImageRepository;
 
         $this->productInventoryRepository = $productInventoryRepository;
 
@@ -449,19 +458,23 @@ class AliExpressProductRepository extends Repository
             "status" => 1
         ]));
 
-        // $variant = $this->productRepository->createVariant($aliExpressProduct->product, $superAttributeOptionids,       array_merge($optionalProductData, [
-        //         "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
-        //         "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
-        //         "price" => $price,
-        //         "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
-        //         "status" => 1
-        //     ]));
+        $imagePath = isset($_SERVER['HTTPS'])? 'https://' . $data['custom_option']['img'] : 'http://' . $data['custom_option']['img'];
+
+        $path = 'product/' . $variant->id . '/' . str_random(40) . '.' . pathinfo($imagePath, PATHINFO_EXTENSION);
+
+        Storage::put($path, file_get_contents($imagePath));
+
+        $addImagetoVariant = $this->productImageRepository->create([
+            'path' => $path,
+            'product_id' => $variant->id,
+        ]);
 
         $aliExpressVariant = parent::create([
                 'product_id' => $variant->id,
                 'parent_id' => $aliExpressProduct->id,
                 'combination_id' => $data['custom_option']['comb']
             ]);
+
         Event::dispatch('catalog.product.update.after', $variant->parent);
 
         return $variant;
