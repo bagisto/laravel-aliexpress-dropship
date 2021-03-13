@@ -118,7 +118,7 @@ class ProductDataGrid extends DataGrid
             'type' => 'delete',
             'label' => 'Delete',
             'action' => route('dropship.catalog.products.massdelete'),
-            'method' => 'DELETE'
+            'method' => 'Post'
         ]);
 
         $this->enableMassAction = true;
