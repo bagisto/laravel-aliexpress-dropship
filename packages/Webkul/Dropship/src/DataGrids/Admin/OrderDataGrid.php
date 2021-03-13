@@ -64,7 +64,7 @@ class OrderDataGrid extends DataGrid
 
         $this->addColumn([
             'index' => 'customer_email',
-            'label' => 'Email',
+            'label' => trans('dropship::app.admin.orders.email'),
             'type' => 'string',
             'searchable' => true,
             'sortable' => false,
