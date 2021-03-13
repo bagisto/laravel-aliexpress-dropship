@@ -106,9 +106,8 @@ class ProductDataGrid extends DataGrid
 
         $this->addAction([
             'type' => 'Delete',
-            'method' => 'POST', // use GET request only for redirect purposes
+            'method' => 'POST',
             'route' => 'admin.catalog.products.delete',
-            // 'confirm_text' => trans('ui::app.datagrid.massaction.delete', ['resource' => 'product']),
             'icon' => 'icon trash-icon'
         ]);
     }
@@ -116,9 +115,9 @@ class ProductDataGrid extends DataGrid
     public function prepareMassActions() {
         $this->addMassAction([
             'type' => 'delete',
-            'label' => 'Delete',
+            'label' => trans('dropship::app.admin.datagrid.delete'),
             'action' => route('dropship.catalog.products.massdelete'),
-            'method' => 'Post'
+            'method' => 'POST'
         ]);
 
         $this->enableMassAction = true;
