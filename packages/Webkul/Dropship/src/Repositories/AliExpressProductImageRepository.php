@@ -69,9 +69,11 @@ class AliExpressProductImageRepository extends Repository
 
                 continue;
             } else {
+                $imagePath = isset($_SERVER['HTTPS']) ? 'https://' . $image : 'http://' . $image;
+
                 $path = 'product/' . $product->id . '/' . str_random(40) . '.' . pathinfo($image, PATHINFO_EXTENSION);
 
-                Storage::put($path, file_get_contents('https://' . $image));
+                Storage::put($path, file_get_contents($imagePath));
 
                 $productImage = $this->productImageRepository->create([
                         'path' => $path,
