@@ -14,6 +14,7 @@ use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Webkul\Product\Repositories\ProductImageRepository;
+use Webkul\Dropship\Repositories\AliExpressProductVideoRepository;
 use Carbon\Carbon;
 
 
@@ -79,6 +80,8 @@ class AliExpressProductRepository extends Repository
      */
     protected $productImageRepository;
 
+    protected $aliExpressProductVideoRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -101,12 +104,15 @@ class AliExpressProductRepository extends Repository
         AliExpressAttributeRepository $aliExpressAttributeRepository,
         AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
         ProductImageRepository $productImageRepository,
+        AliExpressProductVideoRepository $aliExpressProductVideoRepository,
         App $app
     )
     {
         $this->productRepository = $productRepository;
 
         $this->productImageRepository = $productImageRepository;
+
+        $this->aliExpressProductVideoRepository = $aliExpressProductVideoRepository;
 
         $this->productInventoryRepository = $productInventoryRepository;
 
@@ -230,6 +236,10 @@ class AliExpressProductRepository extends Repository
                         }
                     }
                 }
+            }
+
+            if (isset($data['videos']) && ! empty($data['videos'])) {
+                $this->aliExpressProductVideoRepository->uploadVideos($data['videos'], $product);
             }
 
             if (isset($data['image_thumbnails'])) {
