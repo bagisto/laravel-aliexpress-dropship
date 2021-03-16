@@ -71,6 +71,7 @@ class AliExpressProductVideoRepository extends Repository
             Storage::put($path, file_get_contents($video));
 
             $productVideo = $this->productVideoRepository->create([
+                    'type' => 'video',
                     'path' => $path,
                     'product_id' => $product->id
                 ]);
