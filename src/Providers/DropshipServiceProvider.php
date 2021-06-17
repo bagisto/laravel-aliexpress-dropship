@@ -34,6 +34,12 @@ class DropshipServiceProvider extends ServiceProvider
         ], 'public');
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'dropship');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Install::class,
+            ]);
+        }
     }
 
     /**

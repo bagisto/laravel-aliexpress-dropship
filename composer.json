@@ -1,0 +1,40 @@
+{
+    "name": "bagisto/aliexpress-dropship",
+    "description": "Laravel Aliexpress Dropship",
+    "keywords": [
+        "laravel",
+        "bagisto",
+        "ecommerce",
+        "aliexpress",
+        "dropship"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "laravel/helpers": "^1.4",
+        "symfony/dom-crawler": "^5.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Dropship\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Dropship\\DropshipServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "support": {
+        "issues": "https://github.com/bagisto/laravel-aliexpress-dropship/issues",
+        "forum": "https://forums.bagisto.com",
+        "source": "https://github.com/bagisto/laravel-aliexpress-dropship",
+        "docs": "https://github.com/bagisto/laravel-aliexpress-dropship"
+    }
+}
