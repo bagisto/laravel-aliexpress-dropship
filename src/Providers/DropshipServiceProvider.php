@@ -6,7 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Routing\Router;
+
 use Webkul\Dropship\Console\Commands\ProductUpdate;
+use Webkul\Dropship\Console\Commands\Install;
 
 class DropshipServiceProvider extends ServiceProvider
 {
