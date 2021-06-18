@@ -6,7 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Routing\Router;
+
 use Webkul\Dropship\Console\Commands\ProductUpdate;
+use Webkul\Dropship\Console\Commands\Install;
 
 class DropshipServiceProvider extends ServiceProvider
 {
@@ -34,6 +36,12 @@ class DropshipServiceProvider extends ServiceProvider
         ], 'public');
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'dropship');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Install::class,
+            ]);
+        }
     }
 
     /**

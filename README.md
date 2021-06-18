@@ -1,3 +1,5 @@
+# Bagisto AliExpress Dropship
+
 ### 1. Introduction:
 
 With the help of Bagisto AliExpress Dropship extension, the admin can import and list products from the AliExpress to its Bagisto store. After receiving the orders, the admin just need to click a single button and then make the payment as we have automated the order process for the AliExpress orders.
@@ -25,45 +27,12 @@ It packs in lots of demanding features that allows your business to scale in no 
 
 ### 3. Installation:
 
-* Unzip the respective extension zip and then merge "packages" folders into project root directory.
-* Goto config/app.php file and add following line under 'providers'
-
 ~~~
-Webkul\Dropship\Providers\DropshipServiceProvider::class
-~~~
-
-* Goto composer.json file and add following line under 'psr-4'
-
-~~~
-"Webkul\\Dropship\\": "packages/Webkul/Dropship"
-~~~
-
-* Run these commands below to complete the setup
-
-~~~
-composer dump-autoload
+composer require bagisto/aliexpress-dropship
 ~~~
 
 ~~~
-php artisan migrate
-~~~
-
-~~~
-php artisan route:cache
-~~~
-
-~~~
-php artisan vendor:publish
-
--> Press 0 and then press enter to publish all assets and configurations.
-~~~
-
-~~~
-composer require laravel/helpers
-~~~
-
-~~~
-composer require symfony/dom-crawler
+php artisan aliexpress:install
 ~~~
 
 * Add the following line to the crontab for automatic product information updation (eg. Price and Quantity)
