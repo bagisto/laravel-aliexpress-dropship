@@ -98,6 +98,7 @@ class ProductDataGrid extends DataGrid
 
     public function prepareActions() {
         $this->addAction([
+            'title' => 'Edit',
             'type' => 'Edit',
             'method' => 'GET', // use GET request only for redirect purposes
             'route' => 'admin.catalog.products.edit',
@@ -105,6 +106,7 @@ class ProductDataGrid extends DataGrid
         ]);
 
         $this->addAction([
+            'title' => trans('dropship::app.admin.datagrid.delete'),
             'type' => 'Delete',
             'method' => 'POST',
             'route' => 'admin.catalog.products.delete',
