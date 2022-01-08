@@ -98,13 +98,15 @@ class ProductDataGrid extends DataGrid
 
     public function prepareActions() {
         $this->addAction([
+            'title'  => trans('admin::app.datagrid.edit'),
             'type' => 'Edit',
-            'method' => 'GET', // use GET request only for redirect purposes
+            'method' => 'GET',
             'route' => 'admin.catalog.products.edit',
             'icon' => 'icon pencil-lg-icon'
         ]);
 
         $this->addAction([
+            'title'  => trans('admin::app.datagrid.delete'),
             'type' => 'Delete',
             'method' => 'POST',
             'route' => 'admin.catalog.products.delete',
