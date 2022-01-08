@@ -115,10 +115,12 @@ class OrderDataGrid extends DataGrid
             'filterable' => false,
             'closure' => true,
             'wrapper' => function ($row) {
-                if ($row->is_placed)
+                if ($row->is_placed) {
                     return trans('dropship::app.admin.orders.already-placed');
-
-                return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
+                } 
+                elseif (!$row->status == 'canceled') {
+                    return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
+                }
             }
         ]);
 
@@ -135,8 +137,9 @@ class OrderDataGrid extends DataGrid
     public function prepareActions()
     {
         $this->addAction([
+            'title'  => trans('admin::app.datagrid.view'),
             'type' => 'View',
-            'method' => 'GET', // use GET request only for redirect purposes
+            'method' => 'GET',
             'route' => 'admin.sales.orders.view',
             'icon' => 'icon eye-icon'
         ]);
