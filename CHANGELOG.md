@@ -3,6 +3,7 @@
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
 ## v1.3.2
+- [Feature] Added status (on / off ) option for the drop ship manager at the admin end.
 - [Feature] Added composer support
 - [Feature] Added `php artisan aliexpress:install` to prepare the package.
 
