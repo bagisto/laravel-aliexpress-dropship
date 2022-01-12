@@ -9,7 +9,20 @@ return [
         'key' => 'dropship.settings',
         'name' => 'dropship::app.admin.system.settings',
         'sort' => 1,
-    ], [
+    ], 
+    [
+        'key' => 'dropship.settings.general',
+        'name' => 'dropship::app.admin.system.general',
+        'sort' => 1,
+        'fields' => [
+            [
+                'name' => 'status',
+                'title' => 'dropship::app.admin.system.status',
+                'type' => 'boolean'
+            ],
+        ]
+    ],
+    [
         'key' => 'dropship.settings.credentials',
         'name' => 'dropship::app.admin.system.credentials',
         'sort' => 2,
@@ -31,7 +44,7 @@ return [
     ], [
         'key' => 'dropship.settings.product',
         'name' => 'dropship::app.admin.system.product',
-        'sort' => 2,
+        'sort' => 3,
         'fields' => [
             [
                 'name' => 'product_status',
@@ -94,7 +107,7 @@ return [
     ], [
         'key' => 'dropship.settings.product_price',
         'name' => 'dropship::app.admin.system.product-price',
-        'sort' => 3,
+        'sort' => 4,
         'fields' => [
             [
                 'name' => 'price',
@@ -147,7 +160,7 @@ return [
     ], [
         'key' => 'dropship.settings.product_quantity',
         'name' => 'dropship::app.admin.system.product-quantity',
-        'sort' => 4,
+        'sort' => 5,
         'fields' => [
             [
                 'name' => 'product_quantity',
@@ -181,7 +194,7 @@ return [
     , [
         'key' => 'dropship.settings.auto_updation',
         'name' => 'dropship::app.admin.system.auto-updation',
-        'sort' => 5,
+        'sort' => 6,
         'fields' => [
             [
                 'name' => 'quantity',

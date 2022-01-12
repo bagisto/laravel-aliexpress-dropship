@@ -14,6 +14,8 @@ return [
 
         'system' => [
             'dropship'                 => 'Dropship',
+            'status'                   => 'Status',
+            'general'                  => 'General',
             'settings'                 => 'Settings',
             'credentials'              => 'Credentials',
             'username'                 => 'Username',
