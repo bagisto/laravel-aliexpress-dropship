@@ -3,7 +3,7 @@
 return [
     'admin' => [
         'layouts' => [
-            'dropship' => 'Dropship Manager',
+            'dropship' => 'Dropship',
             'products' => 'Products',
             'orders'   => 'Orders'
         ],
