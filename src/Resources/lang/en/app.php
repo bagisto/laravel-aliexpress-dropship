@@ -3,7 +3,7 @@
 return [
     'admin' => [
         'layouts' => [
-            'dropship' => 'Dropship Manager',
+            'dropship' => 'Dropship',
             'products' => 'Products',
             'orders'   => 'Orders'
         ],
@@ -14,6 +14,8 @@ return [
 
         'system' => [
             'dropship'                 => 'Dropship',
+            'status'                   => 'Status',
+            'general'                  => 'General',
             'settings'                 => 'Settings',
             'credentials'              => 'Credentials',
             'username'                 => 'Username',
