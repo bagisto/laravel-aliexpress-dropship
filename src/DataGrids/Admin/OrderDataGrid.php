@@ -118,7 +118,7 @@ class OrderDataGrid extends DataGrid
                 if ($row->is_placed) {
                     return trans('dropship::app.admin.orders.already-placed');
                 } 
-                elseif (!$row->status == 'canceled') {
+                elseif (!($row->status == 'canceled')) {
                     return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
                 }
             }
