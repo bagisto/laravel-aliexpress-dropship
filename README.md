@@ -35,7 +35,7 @@ Webkul\Dropship\Providers\DropshipServiceProvider::class
 * Goto composer.json file and add following line under 'psr-4'
 
 ~~~
-"Webkul\\Dropship\\": "packages/Webkul/Dropship"
+"Webkul\\Dropship\\": "packages/Webkul/Dropship/src"
 ~~~
 
 * Run these commands below to complete the setup
