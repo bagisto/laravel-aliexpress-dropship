@@ -16,48 +16,21 @@ use Webkul\Attribute\Repositories\AttributeFamilyRepository;
 class AliExpressAttributeRepository extends Repository
 {
     /**
-     * AttributeRepository object
-     *
-     * @var array
-     */
-    protected $attributeRepository;
-
-    /**
-     * AttributeFamilyRepository object
-     *
-     * @var array
-     */
-    protected $attributeFamilyRepository;
-
-    /**
-     * AliExpressAttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressAttributeOptionRepository;
-
-    /**
      * Create a new repository instance.
      *
-     * @param Webkul\Attribute\Repositories\AttributeRepository                 $attributeRepository
-     * @param Webkul\Attribute\Repositories\AttributeFamilyRepository           $attributeFamilyRepository
-     * @param Webkul\Attribute\Repositories\AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository
-     * @param Illuminate\Container\Container                                    $app
+     * @param  Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  Webkul\Attribute\Repositories\AttributeFamilyRepository  $attributeFamilyRepository
+     * @param  Webkul\Attribute\Repositories\AliExpressAttributeOptionRepository  $aliExpressAttributeOptionRepository
+     * @param  Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
-        AttributeFamilyRepository $attributeFamilyRepository,
-        AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
+        protected AttributeRepository $attributeRepository,
+        protected AttributeFamilyRepository $attributeFamilyRepository,
+        protected AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
         App $app
     )
     {
-        $this->attributeRepository = $attributeRepository;
-
-        $this->attributeFamilyRepository = $attributeFamilyRepository;
-
-        $this->aliExpressAttributeOptionRepository = $aliExpressAttributeOptionRepository;
-
         parent::__construct($app);
     }
 
@@ -74,8 +47,8 @@ class AliExpressAttributeRepository extends Repository
     /**
      * Import Super Attributes
      *
-     * @param array $superAttributes
-     * @return array
+     * @param  array  $superAttributes
+     * @return  array
      */
     public function importSuperAttributes($superAttributes)
     {
@@ -109,12 +82,12 @@ class AliExpressAttributeRepository extends Repository
                             ];
                     }
                     $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
-                            'code' => $attributeCode,
-                            'type' => 'select',
-                            'swatch_type' => $attributeData['swatch_type'],
-                            'admin_name' => substr($attributeData['title'], 0, -1),
+                            'code'            => $attributeCode,
+                            'type'            => 'select',
+                            'swatch_type'     => $attributeData['swatch_type'],
+                            'admin_name'      => substr($attributeData['title'], 0, -1),
                             'is_configurable' => 1,
-                            'is_filterable' => 1,
+                            'is_filterable'   => 1,
                         ]));
                 }
 
@@ -144,12 +117,12 @@ class AliExpressAttributeRepository extends Repository
                             ];
                     }
                     $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
-                            'code' => $attributeCode,
-                            'type' => 'select',
-                            'swatch_type' => $attributeData['swatch_type'],
-                            'admin_name' => substr($attributeData['title'], 0, -1),
+                            'code'            => $attributeCode,
+                            'type'            => 'select',
+                            'swatch_type'     => $attributeData['swatch_type'],
+                            'admin_name'      => substr($attributeData['title'], 0, -1),
                             'is_configurable' => 1,
-                            'is_filterable' => 1,
+                            'is_filterable'   => 1,
                         ]));
                 }
 
@@ -157,8 +130,7 @@ class AliExpressAttributeRepository extends Repository
                     'ali_express_attribute_id' => $attributeData['attr_id'],
                     'attribute_id' => $attribute->id,
                 ]);
-            }
-            else {
+            } else {
                 if ($aliExpressAttribute) {
                     $attribute = $aliExpressAttribute->attribute;
                 } else {
@@ -182,12 +154,12 @@ class AliExpressAttributeRepository extends Repository
                                 ];
                         }
                         $attribute = $this->attributeRepository->create(array_merge($attributeLabels, [
-                                'code' => $attributeCode,
-                                'type' => 'select',
-                                'swatch_type' => $attributeData['swatch_type'],
-                                'admin_name' => substr($attributeData['title'], 0, -1),
+                                'code'            => $attributeCode,
+                                'type'            => 'select',
+                                'swatch_type'     => $attributeData['swatch_type'],
+                                'admin_name'      => substr($attributeData['title'], 0, -1),
                                 'is_configurable' => 1,
-                                'is_filterable' => 1,
+                                'is_filterable'   => 1,
                             ]));
                     }
 
@@ -219,8 +191,8 @@ class AliExpressAttributeRepository extends Repository
     /**
      * Returns attribute code by attribute title
      *
-     * @param string $attributeTitle
-     * @return mixed
+     * @param  string  $attributeTitle
+     * @return  mixed
      */
     public function getAttributeCodeByTitle($attributeTitle)
     {

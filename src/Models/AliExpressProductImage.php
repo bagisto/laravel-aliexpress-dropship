@@ -3,8 +3,8 @@
 namespace Webkul\Dropship\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkul\Dropship\Contracts\AliExpressProductImage as AliExpressProductImageContract;
 use Webkul\Product\Models\ProductImageProxy;
+use Webkul\Dropship\Contracts\AliExpressProductImage as AliExpressProductImageContract;
 
 class AliExpressProductImage extends Model implements AliExpressProductImageContract
 {

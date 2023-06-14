@@ -17,26 +17,17 @@ use Webkul\Product\Repositories\ProductImageRepository;
 class AliExpressProductImageRepository extends Repository
 {
     /**
-     * ProductImageRepository object
-     *
-     * @var array
-     */
-    protected $productImageRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductImageRepository $productImageRepository
-     * @param Illuminate\Container\Container                     $app
-     * @return void
+     * @param  Webkul\Product\Repositories\ProductImageRepository  $productImageRepository
+     * @param  Illuminate\Container\Container  $app
+     * @return  void
      */
     public function __construct(
-        ProductImageRepository $productImageRepository,
+        protected ProductImageRepository $productImageRepository,
         App $app
     )
     {
-        $this->productImageRepository = $productImageRepository;
-
         parent::__construct($app);
     }
 
@@ -51,9 +42,9 @@ class AliExpressProductImageRepository extends Repository
     }
 
     /**
-     * @param array $images
-     * @param mixed $product
-     * @return mixed
+     * @param  array  $images
+     * @param  mixed  $product
+     * @return  mixed
      */
     public function uploadImages($images, $product)
     {
@@ -76,12 +67,12 @@ class AliExpressProductImageRepository extends Repository
                 Storage::put($path, file_get_contents($imagePath));
 
                 $productImage = $this->productImageRepository->create([
-                        'path' => $path,
+                        'path'       => $path,
                         'product_id' => $product->id
                     ]);
 
                 $this->create([
-                        'url' => $image,
+                        'url'              => $image,
                         'product_image_id' => $productImage->id
                     ]);
             }

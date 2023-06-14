@@ -2,7 +2,7 @@
 
 namespace Webkul\Dropship\DataGrids\Admin;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Webkul\Ui\DataGrid\DataGrid;
 
 /**
@@ -44,46 +44,46 @@ class ProductDataGrid extends DataGrid
     public function addColumns()
     {
         $this->addColumn([
-            'index' => 'product_id',
-            'label' => trans('dropship::app.admin.products.product-id'),
-            'type' => 'number',
+            'index'      => 'product_id',
+            'label'      => trans('dropship::app.admin.products.product-id'),
+            'type'       => 'number',
             'searchable' => false,
-            'sortable' => true,
+            'sortable'   => true,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'sku',
-            'label' => trans('dropship::app.admin.products.sku'),
-            'type' => 'string',
+            'index'      => 'sku',
+            'label'      => trans('dropship::app.admin.products.sku'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'name',
-            'label' => trans('dropship::app.admin.products.name'),
-            'type' => 'string',
+            'index'      => 'name',
+            'label'      => trans('dropship::app.admin.products.name'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'price',
-            'label' => trans('dropship::app.admin.products.price'),
-            'type' => 'price',
-            'sortable' => true,
+            'index'      => 'price',
+            'label'      => trans('dropship::app.admin.products.price'),
+            'type'       => 'price',
+            'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
         ]);
 
         $this->addColumn([
-            'index' => 'quantity',
-            'label' => trans('dropship::app.admin.products.quantity'),
-            'type' => 'number',
-            'sortable' => true,
+            'index'      => 'quantity',
+            'label'      => trans('dropship::app.admin.products.quantity'),
+            'type'       => 'number',
+            'sortable'   => true,
             'searchable' => false,
             'filterable' => true,
             'wrapper'    => function($value) {
@@ -99,29 +99,28 @@ class ProductDataGrid extends DataGrid
     public function prepareActions() {
         $this->addAction([
             'title'  => trans('admin::app.datagrid.edit'),
-            'type' => 'Edit',
+            'type'   => 'Edit',
             'method' => 'GET',
-            'route' => 'admin.catalog.products.edit',
-            'icon' => 'icon pencil-lg-icon'
+            'route'  => 'admin.catalog.products.edit',
+            'icon'   => 'icon pencil-lg-icon'
         ]);
 
         $this->addAction([
             'title'  => trans('admin::app.datagrid.delete'),
-            'type' => 'Delete',
+            'type'   => 'Delete',
             'method' => 'POST',
-            'route' => 'admin.catalog.products.delete',
-            'icon' => 'icon trash-icon'
+            'route'  => 'admin.catalog.products.delete',
+            'icon'   => 'icon trash-icon'
         ]);
     }
 
-    public function prepareMassActions() {
+    public function prepareMassActions()
+    {
         $this->addMassAction([
-            'type' => 'delete',
-            'label' => trans('dropship::app.admin.datagrid.delete'),
+            'type'   => 'delete',
+            'label'  => trans('dropship::app.admin.datagrid.delete'),
             'action' => route('dropship.catalog.products.massdelete'),
             'method' => 'POST'
-        ]);
-
-        $this->enableMassAction = true;
+        ], true);
     }
 }

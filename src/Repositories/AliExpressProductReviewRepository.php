@@ -17,37 +17,19 @@ use Webkul\Product\Repositories\ProductReviewRepository;
 class AliExpressProductReviewRepository extends Repository
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressProductRepository;
-
-    /**
-     * ProductReviewRepository object
-     *
-     * @var Object
-     */
-    protected $productReviewRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\AliExpressProductRepository $aliExpressProductRepository
-     * @param Webkul\Product\Repositories\ProductReviewRepository     $productReviewRepository
-     * @param Illuminate\Container\Container                          $app
+     * @param  Webkul\Product\Repositories\AliExpressProductRepository  $aliExpressProductRepository
+     * @param  Webkul\Product\Repositories\ProductReviewRepository  $productReviewRepository
+     * @param  Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        ProductReviewRepository $productReviewRepository,
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected ProductReviewRepository $productReviewRepository,
         App $app
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->productReviewRepository = $productReviewRepository;
-
         parent::__construct($app);
     }
 
@@ -62,18 +44,18 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @return mixed
+     * @param  array  $data
+     * @return  mixed
      */
     public function create(array $data)
     {
         $productReview = $this->productReviewRepository->create([
                 'product_id' => $data['product_id'],
-                'name' => $data['name'],
-                'rating' => $data['rating'],
-                'status' => 'approved',
-                'title' => ' ',
-                'comment' => $data['comment'] ?? 'N/A'
+                'name'       => $data['name'],
+                'rating'     => $data['rating'],
+                'status'     => 'approved',
+                'title'      => ' ',
+                'comment'    => $data['comment'] ?? 'N/A'
             ]);
 
         $productReview->created_at = $data['created_at'];
@@ -82,7 +64,7 @@ class AliExpressProductReviewRepository extends Repository
         $productReview->save();
 
         $aliExpressProductReview = parent::create([
-                'product_review_id' => $productReview->id,
+                'product_review_id'     => $productReview->id,
                 'ali_express_review_id' => $data['ali_express_review_id'],
             ]);
 
@@ -90,8 +72,8 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @return mixed
+     * @param  array  $data
+     * @return  mixed
      */
     public function importReviews(array $data)
     {
@@ -105,9 +87,9 @@ class AliExpressProductReviewRepository extends Repository
         $crawler = $this->getDomCrawler($this->getHtmlByUrl("https:" . $data['review_url']));
 
         $reviewParams = [
-                'productId' => $crawler->filter('input#productId')->attr('value'),
+                'productId'     => $crawler->filter('input#productId')->attr('value'),
                 'ownerMemberId' => $crawler->filter('input#ownerMemberId')->attr('value'),
-                'memberType' => $crawler->filter('input#memberType')->attr('value')
+                'memberType'    => $crawler->filter('input#memberType')->attr('value')
             ];
 
         $saveReviewCount = 0;
@@ -164,8 +146,8 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param object $reviewsDomCrawler
-     * @return array
+     * @param  object  $reviewsDomCrawler
+     * @return  array
      */
     public function getReviewsData($reviewsDomCrawler)
     {
@@ -180,11 +162,11 @@ class AliExpressProductReviewRepository extends Repository
 
             $reviews[$count] = [
                     'ali_express_review_id' => $crawler->filter('.feedback-id')->attr('value'),
-                    'name' => trim($crawler->filter('.user-name')->text()),
-                    'comment' => trim($crawler->filter('.buyer-feedback')->text()),
-                    'rating' => (5 / (100 / $rating)),
-                    'created_at' => $date->format('Y-m-d H:i:s'),
-                    'updated_at' => $date->format('Y-m-d H:i:s')
+                    'name'                  => trim($crawler->filter('.user-name')->text()),
+                    'comment'               => trim($crawler->filter('.buyer-feedback')->text()),
+                    'rating'                => (5 / (100 / $rating)),
+                    'created_at'            => $date->format('Y-m-d H:i:s'),
+                    'updated_at'            => $date->format('Y-m-d H:i:s')
                 ];
 
             $count++;
@@ -194,8 +176,8 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param array $reviewParams
-     * @return array
+     * @param  array  $reviewParams
+     * @return  array
      */
     public function submitReviewsPage($reviewParams)
     {
@@ -218,8 +200,8 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param string $url
-     * @return array
+     * @param  string  $url
+     * @return  array
      */
     public function getHtmlByUrl($url)
     {
@@ -235,8 +217,8 @@ class AliExpressProductReviewRepository extends Repository
     }
 
     /**
-     * @param string $html
-     * @return object
+     * @param  string  $html
+     * @return  object
      */
     public function getDomCrawler($html)
     {

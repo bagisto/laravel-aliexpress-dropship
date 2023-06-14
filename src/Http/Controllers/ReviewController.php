@@ -14,25 +14,14 @@ use Webkul\Dropship\Repositories\AliExpressProductReviewRepository;
 class ReviewController extends Controller
 {
     /**
-     * AliExpressProductReviewRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductReviewRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressProductReviewRepository $aliExpressProductReviewRepository
      * @return void
      */
     public function __construct(
-        AliExpressProductReviewRepository  $aliExpressProductReviewRepository
-    )
-    {
-        $this->aliExpressProductReviewRepository = $aliExpressProductReviewRepository;
-    }
-
+        protected AliExpressProductReviewRepository  $aliExpressProductReviewRepository
+    ) {}
 
     /**
      * Import AliExpress product reviews into you shop
@@ -47,8 +36,8 @@ class ReviewController extends Controller
             $this->aliExpressProductReviewRepository->importReviews(request()->all());
 
             $response = response($callback . '(' . json_encode([
-                    'success' => true,
-                    'message' => 'Reviews Successfully Imported.',
+                    'success'    => true,
+                    'message'    => 'Reviews Successfully Imported.',
                     'product_id' => request()->input('product_id')
                 ]) . ')');
         } catch(\Exception $e) {

@@ -4,6 +4,7 @@ namespace Webkul\Dropship\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Webkul\Dropship\Http\Controllers\Controller;
+use Webkul\Dropship\DataGrids\Admin\OrderDataGrid;
 
 /**
  * Order controller
@@ -39,6 +40,10 @@ class OrderController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(OrderDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 }

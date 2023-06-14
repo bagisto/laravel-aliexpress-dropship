@@ -17,33 +17,24 @@ use Webkul\Product\Repositories\ProductVideoRepository;
 class AliExpressProductVideoRepository extends Repository
 {
     /**
-     * ProductImageRepository object
-     *
-     * @var array
-     */
-    protected $productVideoRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductVideoRepository $productVideoRepository
-     * @param Illuminate\Container\Container                     $app
+     * @param  Webkul\Product\Repositories\ProductVideoRepository  $productVideoRepository
+     * @param  Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        ProductVideoRepository $productVideoRepository,
+        protected ProductVideoRepository $productVideoRepository,
         App $app
     )
     {
-        $this->productVideoRepository = $productVideoRepository;
-
         parent::__construct($app);
     }
 
     /**
      * Specify Model class name
      *
-     * @return mixed
+     * @return  mixed
      */
     function model()
     {
@@ -51,9 +42,9 @@ class AliExpressProductVideoRepository extends Repository
     }
 
     /**
-     * @param array $images
-     * @param mixed $product
-     * @return mixed
+     * @param  array  $images
+     * @param  mixed  $product
+     * @return  mixed
      */
     public function uploadVideos($video, $product)
     {
@@ -71,8 +62,8 @@ class AliExpressProductVideoRepository extends Repository
             Storage::put($path, file_get_contents($video));
 
             $productVideo = $this->productVideoRepository->create([
-                    'type' => 'video',
-                    'path' => $path,
+                    'type'       => 'video',
+                    'path'       => $path,
                     'product_id' => $product->id
                 ]);
 
@@ -81,13 +72,5 @@ class AliExpressProductVideoRepository extends Repository
                 'product_video_id' => $productVideo->id
             ]);
         }
-
-        // foreach ($previousVideoIds as $videoId) {
-        //     if ($videoModel = $this->productVideoRepository->find($videoId)) {
-        //         Storage::delete($videoModel->path);
-
-        //         $this->productVideoRepository->delete($videoId);
-        //     }
-        // }
     }
 }

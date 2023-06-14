@@ -25,7 +25,7 @@
 
         <div class="page-content">
 
-            {!! app('Webkul\Dropship\DataGrids\Admin\OrderDataGrid')->render() !!}
+           <datagrid-plus src="{{ route('admin.dropship.orders.index') }}"></datagrid-plus>
 
         </div>
     </div>

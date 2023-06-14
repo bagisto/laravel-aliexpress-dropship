@@ -22,8 +22,8 @@ It packs in lots of demanding features that allows your business to scale in no 
 
 ### 2. Requirements:
 
-* **Bagisto**: v1.3.2
-* **Laravel Aliexpress Dropship Chrome Extension**: v1.3.2
+* **Bagisto**: v1.5.1
+* **Laravel Aliexpress Dropship Chrome Extension**: v1.5.1
 
 ### 3. Installation:
 

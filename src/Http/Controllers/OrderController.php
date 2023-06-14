@@ -14,24 +14,14 @@ use Webkul\Dropship\Repositories\AliExpressOrderRepository;
 class OrderController extends Controller
 {
     /**
-     * AliExpressOrderRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressOrderRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressOrderRepository $aliExpressOrderRepository
      * @return void
      */
     public function __construct(
-        AliExpressOrderRepository  $aliExpressOrderRepository
-    )
-    {
-        $this->aliExpressOrderRepository = $aliExpressOrderRepository;
-    }
+        protected AliExpressOrderRepository  $aliExpressOrderRepository
+    ) {}
 
     /**
      * Returns AliExpress orders
@@ -118,16 +108,16 @@ class OrderController extends Controller
 
                     $state = app('Webkul\Core\Repositories\CountryStateRepository')->findOneByField('code', $address->state);
                     $result = [
-                            'contact_name' => $address->name,
-                            'contact_email' => $address->email,
+                            'contact_name'       => $address->name,
+                            'contact_email'      => $address->email,
                             'shipping_address_1' => $address->address1,
                             'shipping_address_2' => $address->address2,
-                            'shipping_city' => $address->city,
-                            'telephone' => $address->phone,
-                            'iso_code_2' => $address->country,
-                            'zipcode' => $address->postcode,
-                            'state' => $state->default_name,
-                            'success' => true
+                            'shipping_city'      => $address->city,
+                            'telephone'          => $address->phone,
+                            'iso_code_2'         => $address->country,
+                            'zipcode'            => $address->postcode,
+                            'state'              => $state->default_name,
+                            'success'            => true
                         ];
                 } else {
                     $result = [
@@ -147,7 +137,6 @@ class OrderController extends Controller
                     'message' => $e->getMessage()
                 ];
         }
-
 
         $response = response($callback . '(' . json_encode($result) . ')');
         $response->header('Content-Type', 'application/javascript');

@@ -6,6 +6,7 @@ use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use Webkul\Product\Models\ProductAttributeValue;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Attribute\Repositories\AttributeRepository;
@@ -15,8 +16,6 @@ use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Webkul\Product\Repositories\ProductImageRepository;
 use Webkul\Dropship\Repositories\AliExpressProductVideoRepository;
-use Carbon\Carbon;
-
 
 /**
  * Seller AliExpress Product Reposotory
@@ -27,105 +26,31 @@ use Carbon\Carbon;
 class AliExpressProductRepository extends Repository
 {
     /**
-     * ProductRepository object
-     *
-     * @var Object
-     */
-    protected $productRepository;
-
-    /**
-     * ProductInventoryRepository object
-     *
-     * @var Object
-     */
-    protected $productInventoryRepository;
-
-    /**
-     * AttributeRepository object
-     *
-     * @var Object
-     */
-    protected $attributeRepository;
-
-    /**
-     * ProductAttributeValueRepository object
-     *
-     * @var Object
-     */
-    protected $productAttributeValueRepository;
-
-    /**
-     * AliExpressProductImageRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressProductImageRepository;
-
-    /**
-     * AliExpressAttributeRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressAttributeRepository;
-
-    /**
-     * AliExpressAttributeOptionRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressAttributeOptionRepository;
-
-    /**
-     * ProductImageRepository Object
-     */
-    protected $productImageRepository;
-
-    protected $aliExpressProductVideoRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductRepository                    $productRepository
-     * @param Webkul\Product\Repositories\ProductInventoryRepository           $productInventoryRepository
-     * @param Webkul\Attribute\Repositories\AttributeRepository                $attributeRepository
-     * @param Webkul\Product\Repositories\ProductAttributeValueRepository      $productAttributeValueRepository
-     * @param Webkul\Product\Repositories\AliExpressProductImageRepository     $aliExpressProductImageRepository
-     * @param Webkul\Dropshop\Repositories\AliExpressAttributeRepository       $aliExpressAttributeRepository
-     * @param Webkul\Dropshop\Repositories\AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository
-     * @param Illuminate\Container\Container                                   $app
-     * @return void
+     * @param  Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  Webkul\Product\Repositories\ProductInventoryRepository  $productInventoryRepository
+     * @param  Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  Webkul\Product\Repositories\ProductAttributeValueRepository  $productAttributeValueRepository
+     * @param  Webkul\Product\Repositories\AliExpressProductImageRepository  $aliExpressProductImageRepository
+     * @param  Webkul\Dropshop\Repositories\AliExpressAttributeRepository  $aliExpressAttributeRepository
+     * @param  Webkul\Dropshop\Repositories\AliExpressAttributeOptionRepository  $aliExpressAttributeOptionRepository
+     * @param  Illuminate\Container\Container  $app
+     * @return  void
      */
     public function __construct(
-        ProductRepository $productRepository,
-        ProductInventoryRepository $productInventoryRepository,
-        AttributeRepository $attributeRepository,
-        ProductAttributeValueRepository $productAttributeValueRepository,
-        AliExpressProductImageRepository $aliExpressProductImageRepository,
-        AliExpressAttributeRepository $aliExpressAttributeRepository,
-        AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
-        ProductImageRepository $productImageRepository,
-        AliExpressProductVideoRepository $aliExpressProductVideoRepository,
+        protected ProductRepository $productRepository,
+        protected ProductInventoryRepository $productInventoryRepository,
+        protected AttributeRepository $attributeRepository,
+        protected ProductAttributeValueRepository $productAttributeValueRepository,
+        protected AliExpressProductImageRepository $aliExpressProductImageRepository,
+        protected AliExpressAttributeRepository $aliExpressAttributeRepository,
+        protected AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected AliExpressProductVideoRepository $aliExpressProductVideoRepository,
         App $app
     )
     {
-        $this->productRepository = $productRepository;
-
-        $this->productImageRepository = $productImageRepository;
-
-        $this->aliExpressProductVideoRepository = $aliExpressProductVideoRepository;
-
-        $this->productInventoryRepository = $productInventoryRepository;
-
-        $this->attributeRepository = $attributeRepository;
-
-        $this->productAttributeValueRepository = $productAttributeValueRepository;
-
-        $this->aliExpressProductImageRepository = $aliExpressProductImageRepository;
-
-        $this->aliExpressAttributeRepository = $aliExpressAttributeRepository;
-
-        $this->aliExpressAttributeOptionRepository = $aliExpressAttributeOptionRepository;
-
         parent::__construct($app);
     }
 
@@ -140,8 +65,8 @@ class AliExpressProductRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @return mixed
+     * @param  array  $data
+     * @return  mixed
      */
     public function create(array $data)
     {
@@ -187,27 +112,27 @@ class AliExpressProductRepository extends Repository
             }
 
             $product = $this->productRepository->update(array_merge($optionalProductData, [
-                    'channel' => core()->getConfigData('dropship.settings.product.default_channel'),
-                    'sku' => $data['id'],
-                    'locale' => core()->getConfigData('dropship.settings.product.default_locale'),
-                    'name' => $data['name'],
-                    'price' => $price,
-                    'status' => core()->getConfigData('dropship.settings.product.product_status'),
+                    'channel'              => core()->getConfigData('dropship.settings.product.default_channel'),
+                    'sku'                  => $data['id'],
+                    'locale'               => core()->getConfigData('dropship.settings.product.default_locale'),
+                    'name'                 => $data['name'],
+                    'price'                => $price,
+                    'status'               => core()->getConfigData('dropship.settings.product.product_status'),
                     'visible_individually' => 1,
-                    'description' => isset($data['description_url']) && $data['description_url'] != ''
+                    'description'          => isset($data['description_url']) && $data['description_url'] != ''
                             ? $this->getHtmlByUrl('https://' . $data['description_url'])
                             : '',
                     'short_description' => $data['name'],
-                    'meta_title' => $data['meta_title'],
-                    'meta_description' => $data['meta_description'],
-                    'meta_keywords' => $data['meta_keywords'],
-                    'guest_checkout' => core()->getConfigData('dropship.settings.product.guest_checkout'),
-                    'categories' => [core()->getConfigData('dropship.settings.product.default_category')],
-                    'tax_category_id' => core()->getConfigData('dropship.settings.product.default_tax_category'),
-                    'url_key' => $data['id'],
-                    'new' => core()->getConfigData('dropship.settings.product.set_new'),
-                    'featured' => core()->getConfigData('dropship.settings.product.set_featured'),
-                    "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0
+                    'meta_title'        => $data['meta_title'],
+                    'meta_description'  => $data['meta_description'],
+                    'meta_keywords'     => $data['meta_keywords'],
+                    'guest_checkout'    => core()->getConfigData('dropship.settings.product.guest_checkout'),
+                    'categories'        => [core()->getConfigData('dropship.settings.product.default_category')],
+                    'tax_category_id'   => core()->getConfigData('dropship.settings.product.default_tax_category'),
+                    'url_key'           => $data['id'],
+                    'new'               => core()->getConfigData('dropship.settings.product.set_new'),
+                    'featured'          => core()->getConfigData('dropship.settings.product.set_featured'),
+                    "weight"            => core()->getConfigData('dropship.settings.product.weight') ?? 0
                 ]), $product->id);
 
             $attributeRepository = app('Webkul\Attribute\Repositories\AttributeRepository');
@@ -248,7 +173,7 @@ class AliExpressProductRepository extends Repository
 
             $aliExpressProduct = parent::create([
                 'product_id' => $product->id,
-                'ali_express_product_id' => $data['id'],
+                'ali_express_product_id'  => $data['id'],
                 'ali_express_product_url' => $data['url'],
                 'ali_express_product_description_url' => isset($data['description_url']) && $data['description_url'] != ''
                         ? $data['description_url']
@@ -268,10 +193,10 @@ class AliExpressProductRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @param $id
-     * @param string $attribute
-     * @return mixed
+     * @param  array  $data
+     * @param  $id
+     * @param  string  $attribute
+     * @return  mixed
      */
     public function update(array $data, $id, $attribute = "id")
     {
@@ -299,7 +224,7 @@ class AliExpressProductRepository extends Repository
         if ($aliExpressProduct->product->type == 'configurable') {
             foreach ($skuProducts->skuModule->skuPriceList as $skuProduct) {
                 $aliExpressChildProduct = $this->findOneWhere([
-                        'parent_id' => $aliExpressProduct->id,
+                        'parent_id'      => $aliExpressProduct->id,
                         'combination_id' => str_replace(',', '_', $skuProduct->skuPropIds)
                     ]);
 
@@ -317,9 +242,9 @@ class AliExpressProductRepository extends Repository
     }
 
     /**
-     * @param array  $data
-     * @param object $aliExpressProduct
-     * @return mixed
+     * @param  array  $data
+     * @param  object  $aliExpressProduct
+     * @return  mixed
      */
     public function updatePriceInventory($skuProduct, $aliExpressProduct)
     {
@@ -361,19 +286,19 @@ class AliExpressProductRepository extends Repository
             $attribute = $this->attributeRepository->findOneByField('code', 'price');
 
             $attributeValue = $this->productAttributeValueRepository->findOneWhere([
-                    'product_id' => $aliExpressProduct->product->id,
+                    'product_id'   => $aliExpressProduct->product->id,
                     'attribute_id' => $attribute->id,
-                    'channel' => null,
-                    'locale' => null
+                    'channel'      => null,
+                    'locale'       => null
                 ]);
 
             if (! $attributeValue) {
                 $this->productAttributeValueRepository->create([
-                        'product_id' => $aliExpressProduct->product->id,
+                        'product_id'   => $aliExpressProduct->product->id,
                         'attribute_id' => $attribute->id,
-                        'value' => $price,
-                        'channel' => null,
-                        'locale' => null
+                        'value'        => $price,
+                        'channel'      => null,
+                        'locale'       => null
                     ]);
             } else {
                 $this->productAttributeValueRepository->update([
@@ -386,9 +311,9 @@ class AliExpressProductRepository extends Repository
     }
 
     /**
-     * @param mixed $aliExpressProduct
-     * @param array $data
-     * @return mixed
+     * @param  mixed  $aliExpressProduct
+     * @param  array  $data
+     * @return  mixed
      */
 
     public function createVariant($aliExpressProduct, $data = [])
@@ -461,9 +386,9 @@ class AliExpressProductRepository extends Repository
         \App::setLocale($locale);
 
         $variant = $aliExpressProduct->product->getTypeInstance()->createVariant($aliExpressProduct->product, $superAttributeOptionids, array_merge($optionalProductData, [
-            "sku" => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
-            "name" => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
-            "price" => $price,
+            "sku"    => $aliExpressProduct->product->sku . '-variant-' . implode('-', $superAttributeOptionids),
+            "name"   => $aliExpressProduct->product->name . ' ' . $data['custom_option']['text'],
+            "price"  => $price,
             "weight" => core()->getConfigData('dropship.settings.product.weight') ?? 0,
             "status" => 1
         ]));
@@ -475,13 +400,13 @@ class AliExpressProductRepository extends Repository
         Storage::put($path, file_get_contents($imagePath));
 
         $addImagetoVariant = $this->productImageRepository->create([
-            'path' => $path,
+            'path'       => $path,
             'product_id' => $variant->id,
         ]);
 
         $aliExpressVariant = parent::create([
-                'product_id' => $variant->id,
-                'parent_id' => $aliExpressProduct->id,
+                'product_id'     => $variant->id,
+                'parent_id'      => $aliExpressProduct->id,
                 'combination_id' => $data['custom_option']['comb']
             ]);
 

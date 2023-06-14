@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Webkul\Dropship\Http\Controllers\Controller;
 use Webkul\Dropship\Repositories\AliExpressProductRepository;
 use Webkul\Product\Repositories\ProductRepository as Product;
-
+use Webkul\Dropship\DataGrids\Admin\ProductDataGrid;
 
 /**
  * Product controller
@@ -24,38 +24,20 @@ class ProductController extends Controller
     protected $_config;
 
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-    */
-
-      /**
-     * ProductRepository object
-     *
-     * @var array
-     */
-    protected $product;
-
-    protected $aliExpressProductRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressProductRepository $aliExpressProductRepository
+     * @param  Webkul\Product\Repositories\ProductRepository as Product $product
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        Product $product
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected Product $product
     )
     {
         $this->_config = request('_config');
 
         $this->middleware('admin');
-
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->product = $product;
     }
 
     /**
@@ -65,6 +47,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return app(ProductDataGrid::class)->toJson();
+        }
+
         return view($this->_config['view']);
     }
 

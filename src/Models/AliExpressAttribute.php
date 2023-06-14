@@ -3,8 +3,8 @@
 namespace Webkul\Dropship\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkul\Dropship\Contracts\AliExpressAttribute as AliExpressAttributeContract;
 use Webkul\Attribute\Models\AttributeProxy;
+use Webkul\Dropship\Contracts\AliExpressAttribute as AliExpressAttributeContract;
 
 class AliExpressAttribute extends Model implements AliExpressAttributeContract
 {

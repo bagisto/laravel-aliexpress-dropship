@@ -2,7 +2,7 @@
 
 namespace Webkul\Dropship\DataGrids\Admin;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Webkul\Ui\DataGrid\DataGrid;
 
 /**
@@ -44,51 +44,51 @@ class OrderDataGrid extends DataGrid
     public function addColumns()
     {
         $this->addColumn([
-            'index' => 'id',
-            'label' => trans('dropship::app.admin.orders.order-id'),
-            'type' => 'number',
+            'index'      => 'id',
+            'label'      => trans('dropship::app.admin.orders.order-id'),
+            'type'       => 'number',
             'searchable' => true,
-            'sortable' => true,
+            'sortable'   => true,
             'filterable' => true
         ]);
 
 
         $this->addColumn([
-            'index' => 'base_grand_total',
-            'label' => trans('dropship::app.admin.orders.grand-total'),
-            'type' => 'price',
+            'index'      => 'base_grand_total',
+            'label'      => trans('dropship::app.admin.orders.grand-total'),
+            'type'       => 'price',
             'searchable' => false,
-            'sortable' => true,
+            'sortable'   => true,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'customer_email',
-            'label' => trans('dropship::app.admin.orders.email'),
-            'type' => 'string',
+            'index'      => 'customer_email',
+            'label'      => trans('dropship::app.admin.orders.email'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'customer_name',
-            'label' => trans('dropship::app.admin.orders.billed-to'),
-            'type' => 'string',
+            'index'      => 'customer_name',
+            'label'      => trans('dropship::app.admin.orders.billed-to'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
             'filterable' => true
         ]);
 
         $this->addColumn([
-            'index' => 'status',
-            'label' => trans('dropship::app.admin.orders.status'),
-            'type' => 'string',
-            'sortable' => false,
+            'index'      => 'status',
+            'label'      => trans('dropship::app.admin.orders.status'),
+            'type'       => 'string',
+            'sortable'   => false,
             'searchable' => false,
             'filterable' => true,
-            'closure' => true,
-            'wrapper' => function ($row) {
+            'closure'    => true,
+            'wrapper'    => function ($row) {
                 if ($row->status == 'processing')
                     return '<span class="badge badge-md badge-success">' . trans('dropship::app.admin.orders.processing') . '</span>';
                 else if ($row->status == 'completed')
@@ -107,28 +107,28 @@ class OrderDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index' => 'is_placed',
-            'label' => trans('dropship::app.admin.orders.place-order'),
-            'type' => 'string',
-            'sortable' => false,
+            'index'      => 'is_placed',
+            'label'      => trans('dropship::app.admin.orders.place-order'),
+            'type'       => 'string',
+            'sortable'   => false,
             'searchable' => false,
             'filterable' => false,
-            'closure' => true,
-            'wrapper' => function ($row) {
+            'closure'    => true,
+            'wrapper'    => function ($row) {
                 if ($row->is_placed) {
                     return trans('dropship::app.admin.orders.already-placed');
                 } 
-                elseif (!$row->status == 'canceled') {
+                elseif ($row->status !== 'canceled') {
                     return '<a href="https://' . $row->ali_express_add_cart_url . '" target="_blank">' . trans('dropship::app.admin.orders.checkout-on-aliexpress') . '</a>';
                 }
             }
         ]);
 
         $this->addColumn([
-            'index' => 'created_at',
-            'label' => trans('dropship::app.admin.orders.order-date'),
-            'type' => 'datetime',
-            'sortable' => true,
+            'index'      => 'created_at',
+            'label'      => trans('dropship::app.admin.orders.order-date'),
+            'type'       => 'datetime',
+            'sortable'   => true,
             'searchable' => false,
             'filterable' => true
         ]);
@@ -138,10 +138,10 @@ class OrderDataGrid extends DataGrid
     {
         $this->addAction([
             'title'  => trans('admin::app.datagrid.view'),
-            'type' => 'View',
+            'type'   => 'View',
             'method' => 'GET',
-            'route' => 'admin.sales.orders.view',
-            'icon' => 'icon eye-icon'
+            'route'  => 'admin.sales.orders.view',
+            'icon'   => 'icon eye-icon'
         ]);
     }
 }

@@ -22,25 +22,15 @@ class ProductUpdate extends Command
     protected $description = 'Automatically updates AliExpress product information (eg. name, description, price and quantity)';
 
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-    */
-    protected $aliExpressProductRepository;
-
-
-    /**
      * Create a new command instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressProductRepository $aliExpressProductRepository
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository
+        protected AliExpressProductRepository $aliExpressProductRepository
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
         parent::__construct();
     }
 

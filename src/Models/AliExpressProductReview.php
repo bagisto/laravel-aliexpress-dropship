@@ -3,8 +3,8 @@
 namespace Webkul\Dropship\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkul\Dropship\Contracts\AliExpressProductReview as AliExpressProductReviewContract;
 use Webkul\Product\Models\ProductReviewProxy;
+use Webkul\Dropship\Contracts\AliExpressProductReview as AliExpressProductReviewContract;
 
 class AliExpressProductReview extends Model implements AliExpressProductReviewContract
 {

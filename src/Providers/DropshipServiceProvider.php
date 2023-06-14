@@ -35,7 +35,6 @@ class DropshipServiceProvider extends ServiceProvider
             __DIR__ . '/../../publishable/assets' => public_path('themes/default/assets'),
         ], 'public');
 
-
         $this->publishes([
             __DIR__ . '/../Resources/views/admin/layouts/nav-left.blade.php' => resource_path('../packages/Webkul/Admin/src/Resources/views/layouts/nav-left.blade.php'),
         ]);

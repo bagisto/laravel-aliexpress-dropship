@@ -16,26 +16,17 @@ use Webkul\Attribute\Repositories\AttributeOptionRepository;
 class AliExpressAttributeOptionRepository extends Repository
 {
     /**
-     * AttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $attributeOptionRepository;
-
-    /**
      * Create a new repository instance.
      *
-     * @param Webkul\Attribute\Repositories\AttributeOptionRepository $attributeOptionRepository
-     * @param Illuminate\Container\Container                          $app
+     * @param  Webkul\Attribute\Repositories\AttributeOptionRepository  $attributeOptionRepository
+     * @param  Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AttributeOptionRepository $attributeOptionRepository,
+        protected AttributeOptionRepository $attributeOptionRepository,
         App $app
     )
     {
-        $this->attributeOptionRepository = $attributeOptionRepository;
-
         parent::__construct($app);
     }
 
@@ -52,9 +43,9 @@ class AliExpressAttributeOptionRepository extends Repository
     /**
      * Checks if attribute options exist or create new one
      *
-     * @param AliExpressAttribute $aliExpressAttribute
-     * @param array               $data
-     * @return array
+     * @param  AliExpressAttribute  $aliExpressAttribute
+     * @param  array  $data
+     * @return  array
      */
     public function checkAttributeOptionsAvailabiliy($aliExpressAttribute, $data)
     {
@@ -64,12 +55,12 @@ class AliExpressAttributeOptionRepository extends Repository
             if ($aliExpressAttribute->attribute->swatch_type == 'image') {
                 $aliExpressAttributeOption = $this->findOneWhere([
                         'ali_express_attribute_option_id' => $optionData['optionid'],
-                        'ali_express_swatch_image' => $optionData['img'],
+                        'ali_express_swatch_image'        => $optionData['img'],
                 ]);
             } else {
                 $aliExpressAttributeOption = $this->findOneWhere([
                         'ali_express_attribute_option_id' => $optionData['optionid'],
-                        'ali_express_swatch_name' => $optionData['name']
+                        'ali_express_swatch_name'         => $optionData['name']
                     ]);
             }
             if (! $aliExpressAttributeOption) {
@@ -79,7 +70,7 @@ class AliExpressAttributeOptionRepository extends Repository
                     if (! $attributeOption) {
                         $attributeOption = $this->attributeOptionRepository->findOneWhere([
                                 'attribute_id' => $aliExpressAttribute->attribute_id,
-                                'admin_name' => $optionData['name']
+                                'admin_name'   => $optionData['name']
                             ]);
                     }
 
@@ -120,11 +111,11 @@ class AliExpressAttributeOptionRepository extends Repository
                     }
                 }
                 $aliExpressAttributeOption = $this->create([
-                        'ali_express_swatch_name' => $optionData['name'],
-                        'ali_express_swatch_image' => isset($optionData['img']) ? $optionData['img'] : '',
+                        'ali_express_swatch_name'         => $optionData['name'],
+                        'ali_express_swatch_image'        => isset($optionData['img']) ? $optionData['img'] : '',
                         'ali_express_attribute_option_id' => $optionData['optionid'],
-                        'ali_express_attribute_id' => $aliExpressAttribute->id,
-                        'attribute_option_id' => $attributeOption->id,
+                        'ali_express_attribute_id'        => $aliExpressAttribute->id,
+                        'attribute_option_id'             => $attributeOption->id,
                 ]);
             }
         }

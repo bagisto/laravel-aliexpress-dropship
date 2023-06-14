@@ -14,24 +14,14 @@ use Webkul\Dropship\Repositories\AliExpressOrderRepository;
 class Order
 {
     /**
-     * AliExpressOrderRepository object
-     *
-     * @var AliExpressOrderRepository
-    */
-    protected $aliExpressOrderRepository;
-
-    /**
      * Create a new customer event listener instance.
      *
-     * @param  Webkul\Dropship\Repositories\AliExpressOrderRepository $aliExpressOrderRepository
+     * @param  Webkul\Dropship\Repositories\AliExpressOrderRepository  $aliExpressOrderRepository
      * @return void
      */
     public function __construct(
-        AliExpressOrderRepository $aliExpressOrderRepository
-    )
-    {
-        $this->aliExpressOrderRepository = $aliExpressOrderRepository;
-    }
+        protected AliExpressOrderRepository $aliExpressOrderRepository
+    ) {}
 
     /**
      * After sales order creation, add entry to dropship order table

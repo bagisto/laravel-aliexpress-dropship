@@ -3,8 +3,8 @@
 namespace Webkul\Dropship\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkul\Dropship\Contracts\AliExpressOrder as AliExpressOrderContract;
 use Webkul\Sales\Models\OrderProxy;
+use Webkul\Dropship\Contracts\AliExpressOrder as AliExpressOrderContract;
 
 class AliExpressOrder extends Model implements AliExpressOrderContract
 {

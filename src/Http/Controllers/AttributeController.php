@@ -14,24 +14,14 @@ use Webkul\Dropship\Repositories\AliExpressAttributeRepository;
 class AttributeController extends Controller
 {
     /**
-     * AliExpressAttributeRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressAttributeRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressAttributeRepository $aliExpressAttributeRepository
      * @return void
      */
     public function __construct(
-        AliExpressAttributeRepository  $aliExpressAttributeRepository
-    )
-    {
-        $this->aliExpressAttributeRepository = $aliExpressAttributeRepository;
-    }
+        protected AliExpressAttributeRepository  $aliExpressAttributeRepository
+    ) {}
 
     /**
      * Import super attributes
@@ -49,7 +39,7 @@ class AttributeController extends Controller
 
             $response = response($callback . '(' . json_encode([
                     'success' => true,
-                    'data' => $result
+                    'data'    => $result
                 ]) . ')');
         } else {
             $response = response($callback . '(' . json_encode([

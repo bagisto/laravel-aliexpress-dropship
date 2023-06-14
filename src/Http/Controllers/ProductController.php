@@ -14,24 +14,14 @@ use Webkul\Dropship\Repositories\AliExpressProductRepository;
 class ProductController extends Controller
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductRepository;
-
-    /**
      * Create a new controller instance.
      *
      * @param  Webkul\Dropship\Repositories\AliExpressProductRepository $aliExpressProductRepository
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository  $aliExpressProductRepository
-    )
-    {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-    }
+        protected AliExpressProductRepository  $aliExpressProductRepository
+    ) {}
 
     /**
      * Import AliExpress products into you shop
@@ -44,8 +34,8 @@ class ProductController extends Controller
 
         try {
             $this->validate(request(), [
-                'id' => 'required',
-                'name' => 'required',
+                'id'    => 'required',
+                'name'  => 'required',
                 'price' => 'required'
             ]);
 
@@ -62,8 +52,8 @@ class ProductController extends Controller
                 $aliExpressProduct = $this->aliExpressProductRepository->create(request()->all());
 
                 $response = response($callback . '(' . json_encode([
-                        'success' => true,
-                        'message' => 'Product Successfully Imported.',
+                        'success'    => true,
+                        'message'    => 'Product Successfully Imported.',
                         'product_id' => $aliExpressProduct->product_id
                     ]) . ')');
             }
@@ -89,8 +79,8 @@ class ProductController extends Controller
         $callback = request()->input('callback');
         try {
             $this->validate(request(), [
-                'product_id' => 'required',
-                'custom_option.comb' => 'required',
+                'product_id'          => 'required',
+                'custom_option.comb'  => 'required',
                 'custom_option.price' => 'required'
             ]);
 
@@ -108,8 +98,8 @@ class ProductController extends Controller
                 $productVariant = $this->aliExpressProductRepository->createVariant($aliExpressProduct, request()->all());
 
                 $response = response($callback . '(' . json_encode([
-                        'success' => true,
-                        'message' => 'Product Successfully Imported.',
+                        'success'    => true,
+                        'message'    => 'Product Successfully Imported.',
                         'product_id' => $productVariant->parent_id
                     ]) . ')');
             }

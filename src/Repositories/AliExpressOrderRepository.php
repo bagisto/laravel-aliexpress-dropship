@@ -15,37 +15,19 @@ use Webkul\Core\Eloquent\Repository;
 class AliExpressOrderRepository extends Repository
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductRepository;
-
-    /**
-     * AliExpressOrderItemRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressOrderItemRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Dropship\Repositories\AliExpressProductRepository   $aliExpressProductRepository
-     * @param Webkul\Dropship\Repositories\AliExpressOrderItemRepository $aliExpressOrderItemRepository
-     * @param Illuminate\Container\Container                             $app
+     * @param  Webkul\Dropship\Repositories\AliExpressProductRepository  $aliExpressProductRepository
+     * @param  Webkul\Dropship\Repositories\AliExpressOrderItemRepository  $aliExpressOrderItemRepository
+     * @param  Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        AliExpressOrderItemRepository $aliExpressOrderItemRepository,
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected AliExpressOrderItemRepository $aliExpressOrderItemRepository,
         App $app
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->aliExpressOrderItemRepository = $aliExpressOrderItemRepository;
-
         parent::__construct($app);
     }
 
@@ -60,8 +42,8 @@ class AliExpressOrderRepository extends Repository
     }
 
     /**
-     * @param array $data
-     * @return mixed
+     * @param  array  $data
+     * @return  mixed
      */
     public function create(array $data)
     {
@@ -97,8 +79,8 @@ class AliExpressOrderRepository extends Repository
 
             $aliExpressOrderItem = $this->aliExpressOrderItemRepository->create([
                     'ali_express_product_id' => $aliExpressProduct->id,
-                    'ali_express_order_id' => $aliExpressOrder->id,
-                    'order_item_id' => $item->id
+                    'ali_express_order_id'   => $aliExpressOrder->id,
+                    'order_item_id'          => $item->id
                 ]);
 
             if ($childItem = $item->child) {
@@ -107,9 +89,9 @@ class AliExpressOrderRepository extends Repository
                 if ($aliExpressChildProduct) {
                     $aliExpressChildOrderItem = $this->aliExpressOrderItemRepository->create([
                             'ali_express_product_id' => $aliExpressChildProduct->id,
-                            'ali_express_order_id' => $aliExpressOrder->id,
-                            'order_item_id' => $childItem->id,
-                            'parent_id' => $aliExpressOrderItem->id
+                            'ali_express_order_id'   => $aliExpressOrder->id,
+                            'order_item_id'          => $childItem->id,
+                            'parent_id'              => $aliExpressOrderItem->id
                         ]);
 
                     $queryParams['wk_product_ids'][] = $aliExpressProduct->ali_express_product_id;
