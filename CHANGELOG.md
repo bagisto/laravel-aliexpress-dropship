@@ -2,6 +2,10 @@
 
 #### This changelog consists the bug & security fixes and new features being included in the releases listed below.
 
+# **v1.5.1(15th of june, 2023)** - _Release_
+
+- [compatibility] compatible with bagisto v1.5.1
+
 ## v1.3.2
 - [Feature] Added status (on / off ) option for the drop ship manager at the admin end.
 - [Feature] Added composer support
