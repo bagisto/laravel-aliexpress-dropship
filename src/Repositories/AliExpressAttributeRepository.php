@@ -4,8 +4,7 @@ namespace Webkul\Dropship\Repositories;
 
 use Illuminate\Container\Container as App;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Attribute\Repositories\AttributeRepository;
-use Webkul\Attribute\Repositories\AttributeFamilyRepository;
+use Webkul\Attribute\Repositories\{AttributeRepository, AttributeFamilyRepository};
 
 /**
  * AliExpress Attribute Repository
