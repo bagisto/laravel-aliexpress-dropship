@@ -2,15 +2,9 @@
 
 namespace Webkul\Dropship\DataGrids\Admin;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Webkul\Ui\DataGrid\DataGrid;
 
-/**
- * Order Data Grid class
- *
- * @author Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class OrderDataGrid extends DataGrid
 {
     /**
@@ -51,7 +45,6 @@ class OrderDataGrid extends DataGrid
             'sortable' => true,
             'filterable' => true
         ]);
-
 
         $this->addColumn([
             'index' => 'base_grand_total',

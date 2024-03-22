@@ -4,12 +4,6 @@ namespace Webkul\Dropship\Repositories;
 
 use Webkul\Core\Repositories\LocaleRepository as BaseLocaleRepository;
 
-/**
- * Locale Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class LocaleRepository extends BaseLocaleRepository
 {
     /**

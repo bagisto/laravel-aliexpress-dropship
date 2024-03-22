@@ -5,32 +5,18 @@ namespace Webkul\Dropship\Http\Controllers;
 use Illuminate\Http\Request;
 use Webkul\Dropship\Repositories\AliExpressOrderRepository;
 
-/**
- * Order controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class OrderController extends Controller
 {
     /**
-     * AliExpressOrderRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressOrderRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Dropship\Repositories\AliExpressOrderRepository $aliExpressOrderRepository
+     * @param  \Webkul\Dropship\Repositories\AliExpressOrderRepository  $aliExpressOrderRepository
      * @return void
      */
     public function __construct(
-        AliExpressOrderRepository  $aliExpressOrderRepository
+        protected AliExpressOrderRepository  $aliExpressOrderRepository
     )
     {
-        $this->aliExpressOrderRepository = $aliExpressOrderRepository;
     }
 
     /**

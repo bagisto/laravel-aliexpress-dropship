@@ -4,12 +4,6 @@ namespace Webkul\Dropship\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
 
-/**
- * Order Item Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressOrderItemRepository extends Repository
 {
     /**

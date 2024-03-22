@@ -6,126 +6,45 @@ use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use Webkul\Product\Models\ProductAttributeValue;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
-use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Webkul\Product\Repositories\ProductImageRepository;
+use Webkul\Dropship\Repositories\AliExpressAttributeOptionRepository;
 use Webkul\Dropship\Repositories\AliExpressProductVideoRepository;
-use Carbon\Carbon;
 
-
-/**
- * Seller AliExpress Product Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressProductRepository extends Repository
 {
     /**
-     * ProductRepository object
-     *
-     * @var Object
-     */
-    protected $productRepository;
-
-    /**
-     * ProductInventoryRepository object
-     *
-     * @var Object
-     */
-    protected $productInventoryRepository;
-
-    /**
-     * AttributeRepository object
-     *
-     * @var Object
-     */
-    protected $attributeRepository;
-
-    /**
-     * ProductAttributeValueRepository object
-     *
-     * @var Object
-     */
-    protected $productAttributeValueRepository;
-
-    /**
-     * AliExpressProductImageRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressProductImageRepository;
-
-    /**
-     * AliExpressAttributeRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressAttributeRepository;
-
-    /**
-     * AliExpressAttributeOptionRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressAttributeOptionRepository;
-
-    /**
-     * ProductImageRepository Object
-     */
-    protected $productImageRepository;
-
-    protected $aliExpressProductVideoRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductRepository                    $productRepository
-     * @param Webkul\Product\Repositories\ProductInventoryRepository           $productInventoryRepository
-     * @param Webkul\Attribute\Repositories\AttributeRepository                $attributeRepository
-     * @param Webkul\Product\Repositories\ProductAttributeValueRepository      $productAttributeValueRepository
-     * @param Webkul\Product\Repositories\AliExpressProductImageRepository     $aliExpressProductImageRepository
-     * @param Webkul\Dropshop\Repositories\AliExpressAttributeRepository       $aliExpressAttributeRepository
-     * @param Webkul\Dropshop\Repositories\AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository
-     * @param Illuminate\Container\Container                                   $app
+     * @param  \Webkul\Product\Repositories\ProductRepository  $productRepository
+     * @param  \Webkul\Product\Repositories\ProductInventoryRepository  $productInventoryRepository
+     * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository  $productAttributeValueRepository
+     * @param  \Webkul\Product\Repositories\AliExpressProductImageRepository  $aliExpressProductImageRepository
+     * @param  \Webkul\Dropshop\Repositories\AliExpressAttributeRepository  $aliExpressAttributeRepository
+     * @param  \Webkul\Dropshop\Repositories\AliExpressAttributeOptionRepository  $aliExpressAttributeOptionRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        ProductRepository $productRepository,
-        ProductInventoryRepository $productInventoryRepository,
-        AttributeRepository $attributeRepository,
-        ProductAttributeValueRepository $productAttributeValueRepository,
-        AliExpressProductImageRepository $aliExpressProductImageRepository,
-        AliExpressAttributeRepository $aliExpressAttributeRepository,
-        AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
-        ProductImageRepository $productImageRepository,
-        AliExpressProductVideoRepository $aliExpressProductVideoRepository,
+        protected ProductRepository $productRepository,
+        protected ProductInventoryRepository $productInventoryRepository,
+        protected AttributeRepository $attributeRepository,
+        protected ProductAttributeValueRepository $productAttributeValueRepository,
+        protected AliExpressProductImageRepository $aliExpressProductImageRepository,
+        protected AliExpressAttributeRepository $aliExpressAttributeRepository,
+        protected AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected AliExpressProductVideoRepository $aliExpressProductVideoRepository,
         App $app
     )
     {
-        $this->productRepository = $productRepository;
-
-        $this->productImageRepository = $productImageRepository;
-
-        $this->aliExpressProductVideoRepository = $aliExpressProductVideoRepository;
-
-        $this->productInventoryRepository = $productInventoryRepository;
-
-        $this->attributeRepository = $attributeRepository;
-
-        $this->productAttributeValueRepository = $productAttributeValueRepository;
-
-        $this->aliExpressProductImageRepository = $aliExpressProductImageRepository;
-
-        $this->aliExpressAttributeRepository = $aliExpressAttributeRepository;
-
-        $this->aliExpressAttributeOptionRepository = $aliExpressAttributeOptionRepository;
-
         parent::__construct($app);
     }
 

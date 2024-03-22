@@ -5,32 +5,18 @@ namespace Webkul\Dropship\Http\Controllers;
 use Illuminate\Http\Request;
 use Webkul\Dropship\Repositories\AliExpressProductRepository;
 
-/**
- * Product controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ProductController extends Controller
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Dropship\Repositories\AliExpressProductRepository $aliExpressProductRepository
+     * @param  \Webkul\Dropship\Repositories\AliExpressProductRepository  $aliExpressProductRepository
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository  $aliExpressProductRepository
+        protected AliExpressProductRepository  $aliExpressProductRepository
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
     }
 
     /**

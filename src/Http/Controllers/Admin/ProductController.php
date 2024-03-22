@@ -8,12 +8,6 @@ use Webkul\Dropship\Repositories\AliExpressProductRepository;
 use Webkul\Product\Repositories\ProductRepository as Product;
 
 
-/**
- * Product controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ProductController extends Controller
 {
     /**
@@ -24,38 +18,19 @@ class ProductController extends Controller
     protected $_config;
 
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-    */
-
-      /**
-     * ProductRepository object
-     *
-     * @var array
-     */
-    protected $product;
-
-    protected $aliExpressProductRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Dropship\Repositories\AliExpressProductRepository $aliExpressProductRepository
+     * @param  \Webkul\Dropship\Repositories\AliExpressProductRepository  $aliExpressProductRepository
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        Product $product
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected Product $product
     )
     {
         $this->_config = request('_config');
 
         $this->middleware('admin');
-
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->product = $product;
     }
 
     /**

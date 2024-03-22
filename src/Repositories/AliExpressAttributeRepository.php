@@ -7,57 +7,24 @@ use Webkul\Core\Eloquent\Repository;
 use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\Attribute\Repositories\AttributeFamilyRepository;
 
-/**
- * AliExpress Attribute Repository
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressAttributeRepository extends Repository
 {
     /**
-     * AttributeRepository object
-     *
-     * @var array
-     */
-    protected $attributeRepository;
-
-    /**
-     * AttributeFamilyRepository object
-     *
-     * @var array
-     */
-    protected $attributeFamilyRepository;
-
-    /**
-     * AliExpressAttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressAttributeOptionRepository;
-
-    /**
      * Create a new repository instance.
      *
-     * @param Webkul\Attribute\Repositories\AttributeRepository                 $attributeRepository
-     * @param Webkul\Attribute\Repositories\AttributeFamilyRepository           $attributeFamilyRepository
-     * @param Webkul\Attribute\Repositories\AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository
-     * @param Illuminate\Container\Container                                    $app
+     * @param  \Webkul\Attribute\Repositories\AttributeRepository  $attributeRepository
+     * @param  \Webkul\Attribute\Repositories\AttributeFamilyRepository  $attributeFamilyRepository
+     * @param  \Webkul\Attribute\Repositories\AliExpressAttributeOptionRepository  $aliExpressAttributeOptionRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
-        AttributeFamilyRepository $attributeFamilyRepository,
-        AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
+        protected AttributeRepository $attributeRepository,
+        protected AttributeFamilyRepository $attributeFamilyRepository,
+        protected AliExpressAttributeOptionRepository $aliExpressAttributeOptionRepository,
         App $app
     )
     {
-        $this->attributeRepository = $attributeRepository;
-
-        $this->attributeFamilyRepository = $attributeFamilyRepository;
-
-        $this->aliExpressAttributeOptionRepository = $aliExpressAttributeOptionRepository;
-
         parent::__construct($app);
     }
 

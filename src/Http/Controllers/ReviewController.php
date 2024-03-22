@@ -5,21 +5,8 @@ namespace Webkul\Dropship\Http\Controllers;
 use Illuminate\Http\Request;
 use Webkul\Dropship\Repositories\AliExpressProductReviewRepository;
 
-/**
- * Review controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class ReviewController extends Controller
 {
-    /**
-     * AliExpressProductReviewRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductReviewRepository;
-
     /**
      * Create a new controller instance.
      *
@@ -27,12 +14,10 @@ class ReviewController extends Controller
      * @return void
      */
     public function __construct(
-        AliExpressProductReviewRepository  $aliExpressProductReviewRepository
+        protected AliExpressProductReviewRepository $aliExpressProductReviewRepository
     )
     {
-        $this->aliExpressProductReviewRepository = $aliExpressProductReviewRepository;
     }
-
 
     /**
      * Import AliExpress product reviews into you shop

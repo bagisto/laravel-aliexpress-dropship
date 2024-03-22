@@ -5,32 +5,18 @@ namespace Webkul\Dropship\Http\Controllers;
 use Illuminate\Http\Request;
 use Webkul\Dropship\Repositories\AliExpressAttributeRepository;
 
-/**
- * Attribute controller
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AttributeController extends Controller
 {
     /**
-     * AliExpressAttributeRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressAttributeRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Dropship\Repositories\AliExpressAttributeRepository $aliExpressAttributeRepository
+     * @param  \Webkul\Dropship\Repositories\AliExpressAttributeRepository  $aliExpressAttributeRepository
      * @return void
      */
     public function __construct(
-        AliExpressAttributeRepository  $aliExpressAttributeRepository
+        protected AliExpressAttributeRepository  $aliExpressAttributeRepository
     )
     {
-        $this->aliExpressAttributeRepository = $aliExpressAttributeRepository;
     }
 
     /**

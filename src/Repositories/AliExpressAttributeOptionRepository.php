@@ -7,35 +7,20 @@ use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Attribute\Repositories\AttributeOptionRepository;
 
-/**
- * AliExpress Attribute Option Repository
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressAttributeOptionRepository extends Repository
 {
     /**
-     * AttributeOptionRepository object
-     *
-     * @var array
-     */
-    protected $attributeOptionRepository;
-
-    /**
      * Create a new repository instance.
      *
-     * @param Webkul\Attribute\Repositories\AttributeOptionRepository $attributeOptionRepository
-     * @param Illuminate\Container\Container                          $app
+     * @param  \Webkul\Attribute\Repositories\AttributeOptionRepository  $attributeOptionRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AttributeOptionRepository $attributeOptionRepository,
+        protected AttributeOptionRepository $attributeOptionRepository,
         App $app
     )
     {
-        $this->attributeOptionRepository = $attributeOptionRepository;
-
         parent::__construct($app);
     }
 
@@ -53,7 +38,7 @@ class AliExpressAttributeOptionRepository extends Repository
      * Checks if attribute options exist or create new one
      *
      * @param AliExpressAttribute $aliExpressAttribute
-     * @param array               $data
+     * @param array $data
      * @return array
      */
     public function checkAttributeOptionsAvailabiliy($aliExpressAttribute, $data)

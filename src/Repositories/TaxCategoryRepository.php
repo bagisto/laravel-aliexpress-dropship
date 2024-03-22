@@ -4,12 +4,6 @@ namespace Webkul\Dropship\Repositories;
 
 use Webkul\Tax\Repositories\TaxCategoryRepository as BaseTaxCategoryRepository;
 
-/**
- * Tax Category Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class TaxCategoryRepository extends BaseTaxCategoryRepository
 {
     /**

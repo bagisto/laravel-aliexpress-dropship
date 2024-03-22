@@ -8,35 +8,20 @@ use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Product\Repositories\ProductImageRepository;
 
-/**
- * Seller AliExpress Product Image Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressProductImageRepository extends Repository
 {
     /**
-     * ProductImageRepository object
-     *
-     * @var array
-     */
-    protected $productImageRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductImageRepository $productImageRepository
-     * @param Illuminate\Container\Container                     $app
+     * @param  \Webkul\Product\Repositories\ProductImageRepository  $productImageRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        ProductImageRepository $productImageRepository,
+        protected ProductImageRepository $productImageRepository,
         App $app
     )
     {
-        $this->productImageRepository = $productImageRepository;
-
         parent::__construct($app);
     }
 

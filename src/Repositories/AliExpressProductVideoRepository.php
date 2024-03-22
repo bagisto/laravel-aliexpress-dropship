@@ -8,35 +8,20 @@ use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Product\Repositories\ProductVideoRepository;
 
-/**
- * Seller AliExpress Product Video Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressProductVideoRepository extends Repository
 {
     /**
-     * ProductImageRepository object
-     *
-     * @var array
-     */
-    protected $productVideoRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\ProductVideoRepository $productVideoRepository
-     * @param Illuminate\Container\Container                     $app
+     * @param Webkul\Product\Repositories\ProductVideoRepository  $productVideoRepository
+     * @param Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        ProductVideoRepository $productVideoRepository,
+        protected ProductVideoRepository $productVideoRepository,
         App $app
     )
     {
-        $this->productVideoRepository = $productVideoRepository;
-
         parent::__construct($app);
     }
 
@@ -81,13 +66,5 @@ class AliExpressProductVideoRepository extends Repository
                 'product_video_id' => $productVideo->id
             ]);
         }
-
-        // foreach ($previousVideoIds as $videoId) {
-        //     if ($videoModel = $this->productVideoRepository->find($videoId)) {
-        //         Storage::delete($videoModel->path);
-
-        //         $this->productVideoRepository->delete($videoId);
-        //     }
-        // }
     }
 }

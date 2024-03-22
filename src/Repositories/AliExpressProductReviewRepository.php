@@ -8,46 +8,22 @@ use Symfony\Component\DomCrawler\Crawler;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Product\Repositories\ProductReviewRepository;
 
-/**
- * AliExpress Product Review Repository
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressProductReviewRepository extends Repository
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var Object
-     */
-    protected $aliExpressProductRepository;
-
-    /**
-     * ProductReviewRepository object
-     *
-     * @var Object
-     */
-    protected $productReviewRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Product\Repositories\AliExpressProductRepository $aliExpressProductRepository
-     * @param Webkul\Product\Repositories\ProductReviewRepository     $productReviewRepository
-     * @param Illuminate\Container\Container                          $app
+     * @param  \Webkul\Product\Repositories\AliExpressProductRepository  $aliExpressProductRepository
+     * @param  \Webkul\Product\Repositories\ProductReviewRepository  $productReviewRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        ProductReviewRepository $productReviewRepository,
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected ProductReviewRepository $productReviewRepository,
         App $app
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->productReviewRepository = $productReviewRepository;
-
         parent::__construct($app);
     }
 

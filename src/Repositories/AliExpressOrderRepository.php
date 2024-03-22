@@ -6,46 +6,22 @@ use Illuminate\Container\Container as App;
 use Illuminate\Support\Facades\Event;
 use Webkul\Core\Eloquent\Repository;
 
-/**
- * Order Reposotory
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class AliExpressOrderRepository extends Repository
 {
     /**
-     * AliExpressProductRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressProductRepository;
-
-    /**
-     * AliExpressOrderItemRepository object
-     *
-     * @var array
-     */
-    protected $aliExpressOrderItemRepository;
-
-    /**
      * Create a new controller instance.
      *
-     * @param Webkul\Dropship\Repositories\AliExpressProductRepository   $aliExpressProductRepository
-     * @param Webkul\Dropship\Repositories\AliExpressOrderItemRepository $aliExpressOrderItemRepository
-     * @param Illuminate\Container\Container                             $app
+     * @param  \Webkul\Dropship\Repositories\AliExpressProductRepository  $aliExpressProductRepository
+     * @param  \Webkul\Dropship\Repositories\AliExpressOrderItemRepository  $aliExpressOrderItemRepository
+     * @param  \Illuminate\Container\Container  $app
      * @return void
      */
     public function __construct(
-        AliExpressProductRepository $aliExpressProductRepository,
-        AliExpressOrderItemRepository $aliExpressOrderItemRepository,
+        protected AliExpressProductRepository $aliExpressProductRepository,
+        protected AliExpressOrderItemRepository $aliExpressOrderItemRepository,
         App $app
     )
     {
-        $this->aliExpressProductRepository = $aliExpressProductRepository;
-
-        $this->aliExpressOrderItemRepository = $aliExpressOrderItemRepository;
-
         parent::__construct($app);
     }
 

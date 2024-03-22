@@ -5,12 +5,6 @@ namespace Webkul\Dropship\Listeners;
 use Illuminate\Support\Facades\Mail;
 use Webkul\Dropship\Repositories\AliExpressOrderRepository;
 
-/**
- * Order event handler
- *
- * @author    Jitendra Singh <jitendra@webkul.com>
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
- */
 class Order
 {
     /**

@@ -2,15 +2,15 @@
 
 return [
     [
-        'key' => 'dropship',
+        'key'  => 'dropship',
         'name' => 'dropship::app.admin.system.dropship',
         'sort' => 1
     ], [
-        'key' => 'dropship.settings',
+        'key'  => 'dropship.settings',
         'name' => 'dropship::app.admin.system.settings',
         'sort' => 1,
     ], [
-        'key' => 'dropship.settings.credentials',
+        'key'  => 'dropship.settings.credentials',
         'name' => 'dropship::app.admin.system.credentials',
         'sort' => 2,
         'fields' => [
@@ -21,22 +21,22 @@ return [
                 'type' => 'text',
                 'validation' => 'required'
             ], [
-                'name' => 'token',
-                'title' => 'dropship::app.admin.system.token',
-                'info' => 'dropship::app.admin.system.token-info',
-                'type' => 'text',
-                'validation' => 'required'
+                'name'       => 'token',
+                'title'      => 'dropship::app.admin.system.token',
+                'info'       => 'dropship::app.admin.system.token-info',
+                'type'       => 'text',
+                'validation' => 'required',
             ]
         ]
     ], [
-        'key' => 'dropship.settings.product',
+        'key'  => 'dropship.settings.product',
         'name' => 'dropship::app.admin.system.product',
         'sort' => 2,
         'fields' => [
             [
-                'name' => 'product_status',
+                'name'  => 'product_status',
                 'title' => 'dropship::app.admin.system.product-status',
-                'type' => 'select',
+                'type'  => 'select',
                 'options' => [
                     [
                         'title' => 'dropship::app.admin.system.enabled',
@@ -47,9 +47,9 @@ return [
                     ]
                 ]
             ], [
-                'name' => 'default_channel',
-                'title' => 'dropship::app.admin.system.default-channel',
-                'type' => 'select',
+                'name'       => 'default_channel',
+                'title'      => 'dropship::app.admin.system.default-channel',
+                'type'       => 'select',
                 'repository' => 'Webkul\Dropship\Repositories\ChannelRepository@getChannels'
             ], [
                 'name' => 'default_locale',
