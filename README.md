@@ -26,13 +26,37 @@ It packs in lots of demanding features that allows your business to scale in no 
 
 ### 3. Installation:
 
-```
-composer require bagisto/aliexpress-dropship
-```
+* Unzip the respective extension zip and then merge "packages" and "public" folders into project root directory.
+* Goto config/app.php file and add following line under 'providers'
 
-```
-php artisan aliexpress:install
-```
+~~~
+Webkul\Dropship\Providers\DropshipServiceProvider::class,
+~~~
+
+Goto composer.json file and add following line under 'psr-4'
+
+~~~
+"Webkul\\Dropship\\": "packages/Webkul/Dropship/src"
+~~~
+
+* Run these commands below to complete the setup
+
+~~~
+composer dump-autoload
+
+~~~
+php artisan migrate
+~~~
+
+~~~
+php artisan route:cache
+~~~
+
+~~~
+php artisan vendor:publish --force
+
+-> Enter the number before Webkul\Dropship\Providers\DropshipServiceProvider and then press enter to publish all assets and configurations.
+~~~
 
 - Add the following line to the crontab for automatic product information updation (eg. Price and Quantity)
 
